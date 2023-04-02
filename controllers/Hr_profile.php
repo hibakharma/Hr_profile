@@ -485,23 +485,7 @@ class Hr_profile extends AdminController {
 		}
 	}
 	/**
-	 * delete insurance type
-	 * @param  integer $id
-	 */
-	public function delete_insurance_type($id) {
-		if (!$id) {
-			redirect(admin_url('hr_profile/setting?group=insurrance'));
-		}
-		$response = $this->hr_profile_model->delete_insurance_type($id);
-		if (is_array($response) && isset($response['referenced'])) {
-			set_alert('warning', _l('hr_is_referenced', _l('insurance_type')));
-		} elseif ($response == true) {
-			set_alert('success', _l('deleted', _l('insurance_type')));
-		} else {
-			set_alert('warning', _l('problem_deleting', _l('insurance_type')));
-		}
-		redirect(admin_url('hr_profile/setting?group=insurrance'));
-	}
+
 	/**
 	 * insurance conditions setting
 	 */
@@ -7948,6 +7932,8 @@ class Hr_profile extends AdminController {
         $this->load->model('departments_model');
         $this->load->model('staff_model');
         $this->load->model('hrm_model');
+        $this->load->model('Insurance_book_num_model');
+        $this->load->model('Insurance_type_model');
 
         $data['month'] = $this->hrm_model->get_month();
 
@@ -8126,7 +8112,7 @@ class Hr_profile extends AdminController {
     public function update_insurance_book_num(){
         $data = $this->input->post();
         $id = $this->input->post('id');
-        $success = $this->Insurance_book_num_model->update($data, $id);
+        $success = $this->insurance_book_num_model->update($data, $id);
         if($success)
             set_alert('success', _l('updated_successfully'));
         else
@@ -8138,7 +8124,9 @@ class Hr_profile extends AdminController {
         if (!$id) {
             redirect($_SERVER['HTTP_REFERER']);
         }
-        $response = $this->Insurance_book_num_model->delete($id);
+
+        $response = $this->insurance_book_num_model->delete($id);
+
         if ($response == true) {
             set_alert('success', _l('deleted_successfully'));
         } else {
@@ -8148,7 +8136,7 @@ class Hr_profile extends AdminController {
     }
 
     public function insurance_book_num_json($id){
-        $data = $this->Insurance_book_num_model->get($id);
+        $data = $this->insurance_book_num_model->get($id);
         echo json_encode($data);
     }
 
