@@ -200,7 +200,7 @@ class hrmApp
 
         $customFieldsColumns = [];
 		 
-        $path = HR_MODULE_PATH  . '/views/admin/tables/' . $table . EXT;
+        $path = HR_PROFILE_MODULE_NAME  . '/views/admin/tables/' . $table . EXT;
 
         if (!file_exists($path)) {
             $path = $table;
@@ -208,7 +208,7 @@ class hrmApp
                 $path .= EXT;
             }
         } else {
-            $myPrefixedPath = HR_MODULE_PATH . '/views/admin/tables/my_' . $table . EXT;
+            $myPrefixedPath = HR_PROFILE_MODULE_NAME . '/views/admin/tables/my_' . $table . EXT;
             if (file_exists($myPrefixedPath)) {
                 $path = $myPrefixedPath;
             }
