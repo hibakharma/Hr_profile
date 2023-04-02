@@ -46,7 +46,7 @@
 									<div class="col-md-12">  
 										<div class="picture-container pull-left">
 											<div class="picture pull-left">
-												<img src="<?php if(isset($staff_cover_image) && isset($image_exist) && isset($link_cover_image)){ echo  base_url($link_cover_image); }else{  echo site_url(HR_PROFILE_PATH.'none_avatar.jpg'); } ?>" class="picture-src" id="wizardPicturePreview" title="">
+												<img src="<?php if(isset($staff_cover_image) && isset($image_exist) && isset($link_cover_image)){ echo  base_url($link_cover_image); }else{  echo site_url(HR_MODULE_PATH.'none_avatar.jpg'); } ?>" class="picture-src" id="wizardPicturePreview" title="">
 												<input type="file" name="profile_image" class="form-control" id="profile_image" accept=".png, .jpg, .jpeg">
 											</div>
 										</div>
@@ -294,12 +294,29 @@
 														}
 													}
 													?>
-													<input type="checkbox" id="dep_<?php echo html_entity_decode($department['departmentid']); ?>" name="departments[]" value="<?php echo html_entity_decode($department['departmentid']); ?>"<?php echo html_entity_decode($checked); ?>>
+													<input type="checkbox" class="deps" onclick="change_staff_department('<?php echo html_entity_decode($department['departmentid']); ?>')" id="dep_<?php echo html_entity_decode($department['departmentid']); ?>" name="departments[]" value="<?php echo html_entity_decode($department['departmentid']); ?>"<?php echo html_entity_decode($checked); ?>>
 													<label for="dep_<?php echo html_entity_decode($department['departmentid']); ?>"><?php echo html_entity_decode($department['name']); ?></label>
 												</div>
 											<?php } ?>
 										</div>
 									<?php } ?>
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+
+                                                    <label for="sub_department_id" class="control-label"><?php echo _l('sub_department') ?></label>
+                                                    <select class="form-control" id="sub_department_id" name="sub_department" placeholder="<?php echo _l('sub_department') ?>" aria-invalid="false">
+                                                        <option></option>
+                                                        <?php foreach ($sub_departments as $sub_department) { ?>
+                                                            <option value="<?= $sub_department['key'] ?>" <?php if($member->sub_department == $sub_department['key']) echo 'selected' ?>><?= $sub_department['value'] ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 									<?php $rel_id = (isset($member) ? $member->staffid : false); ?>
 									<?php echo render_custom_fields('staff',$rel_id); ?>

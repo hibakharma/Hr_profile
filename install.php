@@ -577,6 +577,10 @@ if (!$CI->db->field_exists('staff_identifi' ,db_prefix() . 'staff')) {
     $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
     ADD COLUMN `staff_identifi` VARCHAR(200) NULL ');
 }
+if (!$CI->db->field_exists('sub_department' ,db_prefix() . 'staff')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
+    ADD COLUMN `sub_department` int(11) NULL ');
+}
 
 
 if (!$CI->db->field_exists('birthday' ,db_prefix() . 'staff')) { 
@@ -858,6 +862,34 @@ if (!$CI->db->field_exists('staff_signature' ,db_prefix() . 'hr_staff_contract')
     ADD COLUMN `staff_sign_day` DATE NULL
 
   ;");
+}
+
+
+if (!$CI->db->table_exists(db_prefix() . 'hr_setting')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() .  'hr_setting` (
+      `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+      `active` int(11) NOT NULL,
+      `name` varchar(200) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+    $data = [
+        'name' => 'sub_department',
+        'active' => 0
+    ];
+    $CI->db->insert('hr_setting', $data);
+    $insert_id = $CI->db->insert_id();
+    if ($insert_id) {
+        log_activity('hr_setting add [' . $data['name'] . ']');
+        // return $insert_id;
+    }
+}
+
+
+if (!$CI->db->table_exists(db_prefix() . 'hr_sub_departments')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_sub_departments` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `department_id` varchar(200) NOT NULL,
+    `sub_department_name` varchar(200) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
 }
 
   add_option('hr_profile_hide_menu', 1, 1);

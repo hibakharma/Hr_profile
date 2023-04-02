@@ -13,7 +13,7 @@ class Hr_profile extends AdminController {
 		$this->load->model('hr_profile_model');
 		$this->load->model('departments_model');
 		$this->load->model('staff_model');
-		hooks()->do_action('hr_profile_init'); 
+//		hooks()->do_action('hr_profile_init');
 	}
 
 	/* List all announcements */
@@ -5573,16 +5573,19 @@ class Hr_profile extends AdminController {
 				$data['add_new'] = '';
 				$data['display_staff'] = ' hide';
 			}
-			$this->load->model('currencies_model');
+            $this->load->model('currencies_model');
+            $this->load->model('Sub_department_model');
 
 			$data['list_staff'] = $this->staff_model->get();
 			$data['base_currency'] = $this->currencies_model->get_base_currency();
 			$data['departments'] = $this->departments_model->get();
 			$data['staff_departments'] = $this->departments_model->get_staff_departments($staff_id);
+			$department_id = $data['staff_departments'][0]['departmentid'];
 			$data['positions'] = $this->hr_profile_model->get_job_position();
 			$data['workplace'] = $this->hr_profile_model->get_workplace();
 			$data['staff_cover_image'] = $this->hr_profile_model->get_hr_profile_file($staff_id, 'staff_profile_images');
 			$data['manage_staff'] = $this->input->post('manage_staff');
+            $data['sub_departments'] = $this->Sub_department_model->get_sub_departments($department_id);
 			$this->load->view('hr_record/update_member', $data);
 		}
 	}

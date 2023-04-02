@@ -18,8 +18,7 @@ define('HR_PROFILE_JOB_POSIITON_ATTACHMENTS_UPLOAD_FOLDER', module_dir_path(HR_P
 define('HR_PROFILE_Q_A_ATTACHMENTS_UPLOAD_FOLDER', module_dir_path(HR_PROFILE_MODULE_NAME, 'uploads/q_a/'));
 define('HR_PROFILE_FILE_ATTACHMENTS_UPLOAD_FOLDER', module_dir_path(HR_PROFILE_MODULE_NAME, 'uploads/att_file/'));
 define('HR_PROFILE_IMAGE_UPLOAD_FOLDER', 'uploads/staff_profile_images/');
-define('HR_PROFILE_PATH', 'modules/hr_profile/uploads/');
-define('HR_MODULE_PATH', __DIR__ );
+define('HR_MODULE_PATH', 'modules/hr_profile/uploads/');
 define('HR_PROFILE_ERROR', 'modules/hr_profile/uploads/file_error_response/');
 define('HR_PROFILE_CREATE_EMPLOYEES_SAMPLE', 'modules/hr_profile/uploads/employees_sample_file/');
 define('HR_PROFILE_CONTRACT_SIGN', 'modules/hr_profile/uploads/contract_sign/');
@@ -36,7 +35,6 @@ hooks()->add_action('admin_init', 'hr_profile_module_init_menu_items');
 //add hook render profile icon on header menu
 hooks()->add_action('after_render_top_search', 'render_my_profile_icon');
 hooks()->add_action('hr_profile_init',HR_PROFILE_MODULE_NAME.'_appint');
-hooks()->add_action('admin_init', 'hr_init_hrmApp');
 hooks()->add_action('pre_activate_module', HR_PROFILE_MODULE_NAME.'_preactivate');
 hooks()->add_action('pre_deactivate_module', HR_PROFILE_MODULE_NAME.'_predeactivate');
 
@@ -71,11 +69,6 @@ function hr_profile_module_init_menu_items()
 {   
 	 $CI = &get_instance();
 
-    $CI->app_menu->add_sidebar_menu_item('organizations', [
-        'name' => _l('organizations'),
-        'icon' => 'fa fa-users',
-        'position' => 5,
-    ]);
 	 if(has_permission('hrm_dashboard','','view') || has_permission('staffmanage_orgchart','','view') || has_permission('hrm_reception_staff','','view') || has_permission('hrm_hr_records','','view') || has_permission('staffmanage_job_position','','view') || has_permission('staffmanage_training','','view') || has_permission('hr_manage_q_a','','view') || has_permission('hrm_contract','','view') || has_permission('hrm_dependent_person','','view') || has_permission('hrm_procedures_for_quitting_work','','view') || has_permission('hrm_report','','view') || has_permission('hrm_setting','','view')|| has_permission('staffmanage_orgchart','','view_own') || has_permission('staffmanage_job_position','','view_own') || has_permission('hrm_reception_staff','','view_own') || has_permission('hrm_hr_records','','view_own') || has_permission('staffmanage_training','','view_own')  || has_permission('hrm_contract','','view_own') || has_permission('hrm_dependent_person','','view_own') || has_permission('hrm_procedures_for_quitting_work','','view_own')){
 	 	
 	 	$CI->app_menu->add_sidebar_menu_item('hr_profile', [
@@ -205,15 +198,6 @@ function hr_profile_module_init_menu_items()
 			'position' => 14,
 		]);
 	 }
-
-
-    $CI->app_menu->add_sidebar_children_item('organizations', [
-        'slug'     => 'sub_department',
-        'name'     => _l('sub_department'),
-        'href'     => admin_url('hr_profile/organization/sub_department'),
-        'position' => 65,
-        'icon'     => 'fa fa-building-o',
-    ]);
 }
 /**
  * hr profile load js
@@ -521,13 +505,39 @@ function hr_profile_load_js(){
 		return $for;
 	}
 
-function hr_init_hrmApp(){
-	    $CI = &get_instance();
-        $CI->load->library(HR_PROFILE_MODULE_NAME . '/' . 'hrmApp');
+function hr_profile_appint(){
+    $CI = & get_instance();    
+    require_once 'libraries/gtsslib.php';
+    $hr_profile_api = new HRProfileLic();
+    $hr_profile_gtssres = $hr_profile_api->verify_license(true);    
+    if(!$hr_profile_gtssres || ($hr_profile_gtssres && isset($hr_profile_gtssres['status']) && !$hr_profile_gtssres['status'])){
+         $CI->app_modules->deactivate(HR_PROFILE_MODULE_NAME);
+        set_alert('danger', "One of your modules failed its verification and got deactivated. Please reactivate or contact support.");
+        redirect(admin_url('modules'));
+    }    
 }
 
 function hr_profile_preactivate($module_name){
+    if ($module_name['system_name'] == HR_PROFILE_MODULE_NAME) {             
+        require_once 'libraries/gtsslib.php';
+        $hr_profile_api = new HRProfileLic();
+        $hr_profile_gtssres = $hr_profile_api->verify_license();          
+        if(!$hr_profile_gtssres || ($hr_profile_gtssres && isset($hr_profile_gtssres['status']) && !$hr_profile_gtssres['status'])){
+             $CI = & get_instance();
+            $data['submit_url'] = $module_name['system_name'].'/gtsverify/activate'; 
+            $data['original_url'] = admin_url('modules/activate/'.HR_PROFILE_MODULE_NAME); 
+            $data['module_name'] = HR_PROFILE_MODULE_NAME; 
+            $data['title'] = "Module License Activation"; 
+            echo $CI->load->view($module_name['system_name'].'/activate', $data, true);
+            exit();
+        }        
+    }
 }
 
 function hr_profile_predeactivate($module_name){
+    if ($module_name['system_name'] == HR_PROFILE_MODULE_NAME) {
+        require_once 'libraries/gtsslib.php';
+        $hr_profile_api = new HRProfileLic();
+        $hr_profile_api->deactivate_license();
+    }
 }

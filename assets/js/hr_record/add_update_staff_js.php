@@ -144,4 +144,37 @@
 		$(".selectpicker").selectpicker('refresh');
 	}
 
+	function change_staff_department(id){
+        $('.deps').prop('checked', false)
+        $(`#dep_${id}`).prop('checked', true)
+        let sub_department_id = $('#sub_department_id')
+
+        let sub_departmant = '';
+
+        $.get(admin_url + 'hr_profile/organization/get_sub_departments/' + id, function(response) {
+            if (response.success === true) {
+                sub_department_id.empty();
+                sub_department_id.append($('<option>', {
+                    value: '',
+                    text: ''
+                }));
+                for(let i = 0; i < response.data.length; i++) {
+                    let key = response.data[i].key;
+                    let value = response.data[i].value;
+                    let select = false;
+                    if(key === sub_departmant)
+                        select = true;
+                    sub_department_id.append($('<option>', {
+                        value: key,
+                        text: value,
+                        selected: select
+                    }));
+                    sub_department_id.selectpicker('refresh');
+                }
+            } else {
+                alert_float('danger', response.message);
+            }
+        }, 'json');
+    }
+
 </script>

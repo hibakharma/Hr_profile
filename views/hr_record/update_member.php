@@ -296,25 +296,40 @@ $orther_infor = (isset($member) ? $member->orther_infor : '');
                                  <label for="departments"><?php echo _l('staff_add_edit_departments'); ?></label>
                               <?php }?>
 
-                              <?php foreach ($departments as $department) {
-		?>
+                              <?php foreach ($departments as $department) { ?>
                                  <div class="checkbox checkbox-primary">
                                     <?php
-$checked = '';
-		if (isset($member)) {
-			foreach ($staff_departments as $staff_department) {
-				if ($staff_department['departmentid'] == $department['departmentid']) {
-					$checked = ' checked';
-				}
-			}
-		}
-		?>
-                                     <input type="checkbox" id="dep_<?php echo html_entity_decode($department['departmentid']); ?>" name="departments[]" value="<?php echo html_entity_decode($department['departmentid']); ?>"<?php echo html_entity_decode($checked); ?>>
+                                    $checked = '';
+                                        if (isset($member)) {
+                                            foreach ($staff_departments as $staff_department) {
+                                                if ($staff_department['departmentid'] == $department['departmentid']) {
+                                                    $checked = ' checked';
+                                                }
+                                            }
+                                    }
+                                    ?>
+                                     <input class="deps" onclick="change_staff_department('<?php echo html_entity_decode($department['departmentid']); ?>')" type="checkbox" id="dep_<?php echo html_entity_decode($department['departmentid']); ?>" name="departments[]" value="<?php echo html_entity_decode($department['departmentid']); ?>"<?php echo html_entity_decode($checked); ?>>
                                      <label for="dep_<?php echo html_entity_decode($department['departmentid']); ?>"><?php echo html_entity_decode($department['name']); ?></label>
                                  </div>
                               <?php }?>
                            </div>
                         <?php }?>
+                      <div class="form-group">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+
+                                      <label for="sub_department_id" class="control-label"><?php echo _l('sub_department') ?></label>
+                                      <select class="form-control" id="sub_department_id" name="sub_department" placeholder="<?php echo _l('sub_department') ?>" aria-invalid="false">
+                                          <option></option>
+                                          <?php foreach ($sub_departments as $sub_department) { ?>
+                                            <option value="<?= $sub_department['key'] ?>" <?php if($member->sub_department == $sub_department['key']) echo 'selected' ?>><?= $sub_department['value'] ?></option>
+                                          <?php } ?>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
 
                         <?php $rel_id = (isset($member) ? $member->staffid : false);?>
                         <?php echo render_custom_fields('staff', $rel_id); ?>
