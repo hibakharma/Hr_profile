@@ -478,7 +478,45 @@ $lang['hr_step']	 													 = 'Step';
 $lang['hr_not_staff_member_setting']	 								 = 'The setting for Not Staff Member';
 $lang['hr_not_staff_member_label']	 									 = 'Do not show left menu, Staff profile';
 $lang['hr_not_staff_member_tooltip']	 								 = 'If this employee is Not a staff Member and this setting is enabled, when the employee logs in, the left menu bar, Staff profile will not be visible.';
-
+$lang['insurance_book_number'] = 'Insurance book number';
+$lang['health_insurance_number'] = 'Health insurance number';
+$lang['province_city_id'] = 'Provincial code or City code';
+$lang['registration_medical_care'] = 'Registration of medical care';
+$lang['insurance_history'] = 'Insurance';
+$lang['from_month'] = 'Month';
+$lang['formality'] = 'Formality';
+$lang['reason_'] = 'Reason';
+$lang['premium_rates'] = 'Insurance salary';
+$lang['from_month'] = 'From month';
+$lang['increase'] = 'Increase';
+$lang['decrease'] = 'Decrease';
+$lang['social_insurance'] = 'Social insurance %';
+$lang['labor_accident_insurance'] = 'Labor accident insurance %';
+$lang['health_insurance'] = 'Health insurance %';
+$lang['unemployment_insurance'] = 'Unemployment insurance %';
+$lang['new_insurance_type'] = 'New insurance type';
+$lang['edit_insurance_type'] = 'Edit insurance type';
+$lang['company'] = 'Company';
+$lang['worker'] = 'Worker';
+$lang['province_city'] = 'Province/City';
+$lang['edit_province_city'] = 'Edit Province/City';
+$lang['new_province_city'] = 'New Province/City';
+$lang['province_code'] = 'Province/City code';
+$lang['province_name'] = 'Province/City name';
+$lang['province_file_xlsx_hrm'] = 'The column with the symbol "*" is required to enter.';
+$lang['view_list'] = 'View list';
+$lang['payment_company'] = 'Payment company';
+$lang['payment_worker'] = 'Payment worker';
+$lang['delete_insurance_history_success'] = 'Delete insurance history increase, decrease success';
+$lang['delete_insurance_history_false'] = 'Delete insurance history increase, decrease false';
+$lang['insurance_info'] = 'Isurance information';
+$lang['insurance_info_no'] = 'Insurance history increase, decrease no information';
+$lang['filter_by_month'] = 'Filter by month';
+$lang['add'] = 'Add';
+$lang['add_insurrance'] = 'Add, Edit or Modify Insurance';
+$lang['list_insurrance'] = 'Insurance list';
+$lang['add_insurance_type'] = 'Add insurance type';
+$lang['add_insurance_book_num'] = 'Add insurance book number';
 
 
 

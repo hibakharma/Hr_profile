@@ -7293,6 +7293,7 @@ public function add_attachment_to_database($rel_id, $rel_type, $attachment, $ext
 		}
 		return false;
 	}
+	//******************
 	
 //end file
 }

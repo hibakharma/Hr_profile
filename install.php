@@ -42,6 +42,7 @@ if (!$CI->db->table_exists(db_prefix() . 'setting_transfer_records')) {
     PRIMARY KEY (`id`)
   ) ENGINE=InnoDB DEFAULT CHARSET=" . $CI->db->char_set . ';');
 }
+
 if (!$CI->db->table_exists(db_prefix() . 'rec_set_transfer_record')) {
   $CI->db->query('CREATE TABLE `' . db_prefix() . "rec_set_transfer_record` (
     `set_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -891,5 +892,70 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_sub_departments')) {
     `sub_department_name` varchar(200) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
 }
+//****OLD HR************
+if (!$CI->db->table_exists(db_prefix() . 'insurances_type')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . "insurances_type` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `insurance_book_id` int(11) UNSIGNED  NULL,
+      `for_staff` int(11) UNSIGNED  NULL,
+      `name` VARCHAR(15) NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=" . $CI->db->char_set . ';');
+}
 
+if (!$CI->db->table_exists(db_prefix() . 'insurance_book_nums')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . "insurance_book_nums` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` VARCHAR(15) NULL,
+      `company_name` VARCHAR(15) NULL,
+      `start_date` date NULL,
+      `end_date` date NULL,
+      `file` varchar(100) NULL,
+    `is_notification` int(11) NOT NULL,
+    `recurring_from` int(11) NOT NULL,
+    `deadline_notified` int(11) NOT NULL, 
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=" . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'staff_insurance')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . "staff_insurance` (
+      `insurance_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+      `staff_id` int(11) UNSIGNED NOT NULL,
+      `insurance_book_num` varchar(100) NULL,
+      `insurance_type` varchar(100) NULL,
+      `health_insurance_num` varchar(100) NULL,
+      `city_code` varchar(100) NULL,
+      `registration_medical` varchar(100) NULL,
+      `start_date` date NULL,
+      `end_date` date NULL,
+      `file` varchar(100) NULL,
+        `is_notification` int(11) NOT NULL,
+        `recurring_from` int(11) NOT NULL,
+        `deadline_notified` int(11) NOT NULL, 
+      PRIMARY KEY (`insurance_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=" . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'staff_insurance_history')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . "staff_insurance_history` (
+      `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+      `insurance_id` int(11) UNSIGNED NOT NULL,
+      `staff_id` int(11) UNSIGNED  NULL,
+      `from_month` date NULL,
+      `formality` varchar(50) NULL,
+      `reason` varchar(50) NULL,
+      `premium_rates` varchar(100) NULL,
+      `payment_company` varchar(100) NULL,
+      `payment_worker` varchar(100) NULL,
+      PRIMARY KEY (`id`,`insurance_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=" . $CI->db->char_set . ';');
+}
+if (!$CI->db->field_exists('is_notification', db_prefix() . 'staff_insurance')) {
+    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `is_notification` int(11) DEFAULT 0;");
+}
+if (!$CI->db->field_exists('recurring_from', db_prefix() . 'staff_insurance')) {
+    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `recurring_from` int(11) DEFAULT 0;");
+}
+if (!$CI->db->field_exists('deadline_notified', db_prefix() . 'staff_insurance')) {
+    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `deadline_notified` int(11) DEFAULT 0;");
+}
   add_option('hr_profile_hide_menu', 1, 1);

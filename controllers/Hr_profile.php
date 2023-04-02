@@ -13,6 +13,11 @@ class Hr_profile extends AdminController {
 		$this->load->model('hr_profile_model');
 		$this->load->model('departments_model');
 		$this->load->model('staff_model');
+        //********old hr********
+        $this->load->model('insurance_book_num_model');
+        $this->load->model('insurance_type_model');
+        $this->load->model('hrm_model');
+
 //		hooks()->do_action('hr_profile_init');
 	}
 
@@ -252,6 +257,8 @@ class Hr_profile extends AdminController {
 		}
 
 		$this->load->model('staff_model');
+        $this->load->model('hrm_model');
+        $this->load->model('Insurance_book_num_model');
 		$data['group'] = $this->input->get('group');
 		$data['title'] = _l('setting');
 		$data['tab'][] = 'contract_type';
@@ -262,6 +269,10 @@ class Hr_profile extends AdminController {
 		$data['tab'][] = 'reception_staff';
 		$data['tab'][] = 'workplace';
 		$data['tab'][] = 'contract_template';
+        //****OLD HR****//
+        $data['tab'][] = 'insurance_type';
+        $data['tab'][] = 'insurance_book_number';
+        //**************
 		if (is_admin()) {
 			$data['tab'][] = 'hr_profile_permissions';
 		}
@@ -303,6 +314,23 @@ class Hr_profile extends AdminController {
 		} elseif ($data['group'] == 'contract_template') {
 			$data['contract_templates'] = $this->hr_profile_model->get_contract_template();
 		}
+        //***OLD HR***//
+        if ($this->input->is_ajax_request()) {
+            if ($data['group'] == 'insurance_book_number') {
+
+                $this->app->get_table_data(module_views_path('hr_profile', 'my_insurance_book_number_table'));
+
+            } elseif ($data['group'] == 'insurance_type') {
+                $this->app->get_table_data(module_views_path('hr_profile', 'my_insurance_type_table'));
+
+            }
+
+
+        }
+        if ($data['group'] == 'insurance_type') {
+            $data['insurance_book_numbers'] = $this->Insurance_book_num_model->get();
+        }
+        //*************
 
 		$data['job_position'] = $this->hr_profile_model->get_job_position();
 		$data['contract_type'] = $this->hr_profile_model->get_contracttype();
@@ -7906,6 +7934,278 @@ class Hr_profile extends AdminController {
 		}
 		redirect(admin_url('hr_profile/setting?group=contract_template'));
 	}
+    //*********OLD HR**********
+    public function table_insurance()
+    {
+
+        $this->app->get_table_data(module_views_path('hr_profile', 'table_insurance'));
+
+    }
+
+
+    public function insurances(){
+
+        $this->load->model('departments_model');
+        $this->load->model('staff_model');
+        $this->load->model('hrm_model');
+
+        $data['month'] = $this->hrm_model->get_month();
+
+        $data['title'] = _l('insurrance');
+        $data['dep_tree'] = json_encode($this->hrm_model->get_department_tree());
+
+        $this->load->view('hr_profile/insurance/manage_insurance', $data);
+    }
+
+    //function add,delete,update insurrance
+    public function insurance($id = ''){
+
+        if (!has_permission('hr', '', 'view')) {
+            access_denied('hr');
+        }
+        if ($this->input->post()) {
+            $data = $this->input->post();
+            if ($this->input->post('insurance_id') == '') {
+
+                // $data['insurance_book_num'] = get_option('insurance_book_number');
+                if (!has_permission('hr', '', 'create')) {
+                    access_denied('hr');
+                }
+                $id = $this->hrm_model->add_insurance($data);
+                if ($id) {
+                    set_alert('success', _l('added_successfully', _l('insurance_history')));
+                    redirect(admin_url('hr_profile/insurances'));
+                }
+            } else {
+                if (!has_permission('hr', '', 'edit')) {
+                    access_denied('hr');
+                }
+
+                $response = $this->hrm_model->update_insurance($data, $this->input->post('insurance_id'));
+                if (is_array($response)) {
+                    if (isset($response['cant_remove_main_admin'])) {
+                        set_alert('warning', _l('staff_cant_remove_main_admin'));
+                    } elseif (isset($response['cant_remove_yourself_from_admin'])) {
+                        set_alert('warning', _l('staff_cant_remove_yourself_from_admin'));
+                    }
+                } elseif ($response == true) {
+
+                    set_alert('success', _l('updated_successfully', _l('insurance_history')));
+                }
+                redirect(admin_url('hr_profile/insurances'));
+            }
+        }
+
+        if ($id == '') {
+            $title = _l('add_new', _l('insurrance'));
+            $data['title'] = $title;
+        } else {
+            $title = _l('edit', _l('insurrance'));
+            $insurance = $this->hrm_model->get_insurance($id);
+            $insurance_history = $this->hrm_model->get_insurance_history($id);
+
+
+            $data['insurances']            = $insurance;
+            $data['insurance_history']            = $insurance_history;
+
+
+
+        }
+        $data['insurance_types'] = $this->Insurance_type_model->get('', ['for_staff' => 1]);
+        $data['insurance_book_nums'] = $this->Insurance_book_num_model->get();
+        // var_dump($data['insurance_book_nums']); exit;
+        $data['month'] = $this->hrm_model->get_month();
+        $data['staff'] = $this->staff_model->get('');
+        $this->load->view('hr_profile/insurance/insurance', $data);
+    }
+
+    public function build_insurance_types_relations() {
+
+        $types = $this->Insurance_type_model->get('', ['insurance_book_id' => $this->input->post('insurance_book_num'), 'for_staff' => 1]);
+        $output = '<option value=""></option>';
+        $select=$this->input->post('selected');
+        foreach ($types as $row)
+        {
+            if($row['id']==$select)$selected="selected";else $selected="";
+            $output .= '<option value="'.$row['id'].'" '.$selected.' >'.$row['name'].'</option>';
+        }
+        echo $output;
+    }
+
+    public function insurance_book_exists(){
+        if ($this->input->is_ajax_request()) {
+            if ($this->input->post()) {
+                // First we need to check if the email is the same
+                $insurance_id = $this->input->post('insurance_id');
+
+                if ($insurance_id != '') {
+                    $this->db->where('insurance_id', $insurance_id);
+                    $staff = $this->db->get('tblstaff_insurance')->row();
+                    if ($staff->insurance_book_num == $this->input->post('insurance_book_num')) {
+                        echo json_encode(true);
+                        die();
+                    }
+                }
+                $this->db->where('insurance_book_num', $this->input->post('insurance_book_num'));
+                $total_rows = $this->db->count_all_results('tblstaff_insurance');
+                if ($total_rows > 0) {
+                    echo json_encode(false);
+                } else {
+                    echo json_encode(true);
+                }
+                die();
+            }
+        }
+    }
+    public function health_insurance_exists(){
+        if ($this->input->is_ajax_request()) {
+            if ($this->input->post()) {
+                // First we need to check if the email is the same
+                $insurance_id = $this->input->post('insurance_id');
+
+                if ($insurance_id != '') {
+                    $this->db->where('insurance_id', $insurance_id);
+                    $staff = $this->db->get('tblstaff_insurance')->row();
+                    if ($staff->health_insurance_num == $this->input->post('health_insurance_num')) {
+                        echo json_encode(true);
+                        die();
+                    }
+                }
+                $this->db->where('health_insurance_num', $this->input->post('health_insurance_num'));
+                $total_rows = $this->db->count_all_results('tblstaff_insurance');
+                if ($total_rows > 0) {
+                    echo json_encode(false);
+                } else {
+                    echo json_encode(true);
+                }
+                die();
+            }
+        }
+    }
+
+    public function delete_insurance_history(){
+        if ($this->input->is_ajax_request()) {
+            if ($this->input->post()) {
+
+                $insurance_history_id = $this->input->post('insurance_history_id');
+                if ($insurance_history_id != '') {
+                    $this->db->where('id', $insurance_history_id);
+                    $this->db->delete(db_prefix() . 'staff_insurance_history');
+                    if ($this->db->affected_rows() > 0 ){
+
+                        echo json_encode([
+                            'data' => true,
+                            'message' => _l('delete_insurance_history_success'),
+                        ]);
+                    }else{
+
+                        echo json_encode([
+                            'data' => false,
+                            'message' => _l('delete_insurance_history_false'),
+
+                        ]);
+
+                    }
+                }
+            }
+        }
+    }
+
+// insurance_book_num
+
+    public function add_insurance_book_num(){
+        $data = $this->input->post();
+        $success = $this->insurance_book_num_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function update_insurance_book_num(){
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $success = $this->Insurance_book_num_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_insurance_book_num($id){
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $response = $this->Insurance_book_num_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function insurance_book_num_json($id){
+        $data = $this->Insurance_book_num_model->get($id);
+        echo json_encode($data);
+    }
+
+    // insurance_book_num
+
+    public function add_insurance_type(){
+        $this->load->model('Insurance_type_model');
+        $data = $this->input->get();
+
+        $success = $this->Insurance_type_model->add($data);
+
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function update_insurance_type(){
+        $this->load->model('Insurance_type_model');
+        $data = $this->input->get();
+        if(!isset($data['for_staff']))
+            $data['for_staff'] = '';
+        $id = $this->input->get('id');
+        $success = $this->Insurance_type_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    public function delete_insurance_type($id) {
+        $this->load->model('Insurance_type_model');
+
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $response = $this->Insurance_type_model->delete($id);
+
+        if (is_array($response) && isset($response['referenced'])) {
+            set_alert('warning', _l('is_referenced', _l('insurance_type')));
+        } elseif ($response == true) {
+            set_alert('success', _l('deleted', _l('insurance_type')));
+        } else {
+            set_alert('warning', _l('problem_deleting', _l('insurance_type')));
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function insurance_type_json($id){
+        $this->load->model('Insurance_type_model');
+        $data = $this->Insurance_type_model->get($id);
+        echo json_encode($data);
+    }
+    //***********************
+
+
 
 //end file
 }

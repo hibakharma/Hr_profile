@@ -478,6 +478,27 @@ $lang['hr_step']	 													 = 'الخطوة';
 $lang['hr_not_staff_member_setting']	 								 = 'الإعداد لغير الموظفين';
 $lang['hr_not_staff_member_label']	 									 = 'لا تظهر القائمة اليمنى ، الملف الشخصي للموظفين';
 $lang['hr_not_staff_member_tooltip']	 								 = 'إذا لم يكن هذا الموظف عضوًا في فريق العمل وتم تمكين هذا الإعداد ، فعند تسجيل دخول الموظف ، لن يكون شريط القائمة الأيمن ، ملف تعريف الموظف مرئيًا.';
+$lang['insurrance'] = 'التأمين الطبي';
+$lang['insurance_type'] = 'نوع التأمين';
+$lang['insurance_conditions'] = 'زيادة / نقصان شروط التأمين ';
+$lang['insurance_book_number'] = 'رقم بوليصة التأمين';
+$lang['health_insurance_number'] = 'رقم كرت التأمين الطبي';
+$lang['insurance_history'] = 'التأمين';
+$lang['social_insurance'] = 'التأمينات الاجتماعية %';
+$lang['labor_accident_insurance'] = 'التأمين ضد حوادث العمل %';
+$lang['health_insurance'] = 'التأمين الطبي %';
+$lang['unemployment_insurance'] = 'التأمين ضد التعطل عن العمل %';
+$lang['new_insurance_type'] = 'نوع تأمين جديد';
+$lang['edit_insurance_type'] = 'تحرير نوع تأمين';
+$lang['delete_insurance_history_success'] = 'نجاح حذف ترقية\تخفيض سجل التأمين';
+$lang['delete_insurance_history_false'] = 'فشل حذف ترقية\تخفيض سجل التأمين';
+$lang['insurance_info'] = 'معلومات التأمين';
+$lang['insurance_info_no'] = 'لايوجد معلومات لـ ترقية\تخفيض التأمين';
+$lang['add_insurrance'] = 'إضافة أو تحرير أو تعديل التأمين ';
+$lang['list_insurrance'] = 'قائمة التأمين';
+$lang['salary_insurance_'] = 'بدل التأمين';
+$lang['add_insurance_type'] = 'اضافة نوع تأمين';
+$lang['add_insurance_book_num'] = 'اضافة رقم بوليصة تأمين جديد';
 
 
 

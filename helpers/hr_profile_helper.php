@@ -1039,3 +1039,11 @@ function get_hr_profile_upload_path_by_type($type)
 
 		return $hide_menu;
 	}
+
+	//*********oldHR***********
+function get_insurance_types_relation_data($book_num) {
+    $CI = get_instance();
+    $CI->load->model('Insurance_type_model');
+    $data = $CI->Insurance_type_model->get('', ['insurance_book_id' => $book_num, 'for_staff' => 1]);
+    return $data;
+}
