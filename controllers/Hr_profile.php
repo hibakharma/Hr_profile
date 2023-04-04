@@ -257,6 +257,11 @@ class Hr_profile extends AdminController {
 		}
 
 		$this->load->model('staff_model');
+        if(!$this->input->get('group')){
+            $_GET['group'] = 'deduction';
+            $group = 'deduction';
+        }else{
+            $group = $this->input->get('group');}
         $this->load->model('hrm_model');
         $this->load->model('Insurance_book_num_model');
 		$data['group'] = $this->input->get('group');
@@ -269,10 +274,44 @@ class Hr_profile extends AdminController {
 		$data['tab'][] = 'reception_staff';
 		$data['tab'][] = 'workplace';
 		$data['tab'][] = 'contract_template';
+        $data['tab'][] = 'document';
+        $data['tab'][] = 'education_level';
+        $data['tab'][] = 'relation';
+        $data['tab'][] = 'deduction';
         //****OLD HR****//
         $data['tab'][] = 'insurance_type';
         $data['tab'][] = 'insurance_book_number';
         //**************
+        if ($this->input->is_ajax_request()) {
+
+            if($group == 'deduction'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_deduction_types_table');
+            }
+            if($data['group'] == 'document'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_document_types_table');
+            }
+
+            if($data['group'] == 'education_level'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_education_level_types_table');
+
+            }
+            if($data['group'] == 'education'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_education_types_table');
+
+            }
+            if($data['group'] == 'skill'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_skill_types_table');
+            }
+            if($data['group'] == 'relation'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('types/my_relation_types_table');
+            }
+        }
 		if (is_admin()) {
 			$data['tab'][] = 'hr_profile_permissions';
 		}
@@ -3251,7 +3290,14 @@ class Hr_profile extends AdminController {
 		$data['tab'][] = 'training';
 		$data['tab'][] = 'staff_project';
 		$data['tab'][] = 'attach';
-		$data['tab'] = hooks()->apply_filters('hr_profile_tab_name', $data['tab']);
+        $data['tab'][] = 'immigration';
+        $data['tab'][] = 'document';
+        $data['tab'][] = 'qualification';
+        $data['tab'][] = 'work_experience';
+        $data['tab'][] = 'emergency_contacts';
+        $data['tab'][] = 'bank_account';
+
+        $data['tab'] = hooks()->apply_filters('hr_profile_tab_name', $data['tab']);
 
 		if ($data['group'] == '') {
 			$data['group'] = 'profile';
@@ -3307,6 +3353,35 @@ class Hr_profile extends AdminController {
 			if ($data['group'] == 'dependent_person') {
 				$data['dependent_person'] = $this->hr_profile_model->get_dependent_person_bytstaff($id);
 			}
+            if ($this->input->is_ajax_request()) {
+                if($group == 'immigration'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_immigrations_table', ['staff_id' => $id]);
+                }
+                elseif($group == 'bank_account'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_bank_account_table', ['staff_id' => $id]);
+                }
+                if($group == 'work_experience'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_work_experience_table', ['staff_id' => $id]);
+                }
+
+                elseif($group == 'emergency_contacts'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_emergency_contacts_table', ['staff_id' => $id]);
+                }
+
+                if($group == 'qualification'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_qualifications_table', ['staff_id' => $id]);
+                }
+
+
+                if($group == 'document'){
+                    $this->load->library("hr_profile/HrmApp");
+                    $this->hrmapp->get_table_data('my_document_table', ['staff_id' => $id]);
+                }}
 			if ($data['group'] == 'attach') {
 				$data['hr_profile_staff'] = $this->hr_profile_model->get_hr_profile_attachments($id);
 			}
@@ -3467,7 +3542,7 @@ class Hr_profile extends AdminController {
 		$data['list_staff'] = $this->staff_model->get();
 
 		$data['tabs']['view'] = 'hr_record/includes/' . $data['group'];
-
+        $data['staff_id']=$id;
 		$data['tabs']['view'] = hooks()->apply_filters('hr_profile_tab_content', $data['tabs']['view']);
 
 		$this->load->view('hr_record/member', $data);
@@ -7832,6 +7907,7 @@ class Hr_profile extends AdminController {
 		$this->load->view('hr_profile/contracts/contracthtml', $data);
 	}
 
+
 	/**
 	 * contract template
 	 * @param  string $id
@@ -7918,6 +7994,772 @@ class Hr_profile extends AdminController {
 		}
 		redirect(admin_url('hr_profile/setting?group=contract_template'));
 	}
+    //salary
+    public function salary($staff_id){
+
+        $group = '';
+
+        if(!$this->input->get('group')){
+            $_GET['group'] = 'update_salary';
+        }else{
+            $group = $this->input->get('group');
+        }
+        if ($this->input->is_ajax_request()) {
+            if($group == 'commissions'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_commissions_table', ['staff_id' => $staff_id]);
+            }elseif($group == 'other_payments'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_other_payments_table', ['staff_id' => $staff_id]);
+            }elseif($group == 'loan'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_loan_table', ['staff_id' => $staff_id]);
+            }elseif($group == 'overtime'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_overtime_table', ['staff_id' => $staff_id]);
+            }elseif($group == 'allowances'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_allowances_table', ['staff_id' => $staff_id]);
+            }elseif($group == 'statutory_deductions'){
+                $this->load->library("hr_profile/HrmApp");
+                $this->hrmapp->get_table_data('my_statutory_deductions_table', ['staff_id' => $staff_id]);
+            }
+        }
+
+        $staff = ['type' => '', 'amount' => 0];
+        $this->load->model("hr_profile/Salary_model");
+        $data['staff'] = (object)$staff;
+        if($this->Salary_model->get($staff_id)){
+            $data['staff'] = $this->Salary_model->get($staff_id);
+        }
+
+        $data['group'] = $group;
+        $data['staff_id'] = $staff_id;
+        $data['title'] = _l('salary');
+        $this->load->view('details/salary/manage', $data);
+    }
+
+
+    public function update_salary(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $staff_id = $this->input->post('staff_id');
+        $this->load->model("hr_profile/Salary_model");
+        $success = $this->Salary_model->update($data, $staff_id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    // allowance
+
+    public function json_allowance($id){
+        $this->load->model("hr_profile/Allowances_model");
+        $data = $this->Allowances_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_allowance(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Allowances_model");
+        $success = $this->Allowances_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_allowance(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("hr_profile/Allowances_model");
+        $success = $this->Allowances_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_allowance($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Allowances_model");
+        $response = $this->Allowances_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+// other_payment
+
+    public function json_other_payment($id){
+        $this->load->model("hr_profile/Other_payment_model");
+        $data = $this->Other_payment_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_other_payment(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Other_payment_model");
+        $success = $this->Other_payment_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_other_payment(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("hr_profile/Other_payment_model");
+        $success = $this->Other_payment_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_other_payment($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Other_payment_model");
+        $response = $this->Other_payment_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+// loan
+
+    public function json_loan($id){
+        $this->load->model("hr_profile/Loan_model");
+        $data = $this->Loan_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_loan(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $data['start_date'] = to_sql_date($data['start_date']);
+        $data['end_date'] = to_sql_date($data['end_date']);
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Loan_model");
+        $success = $this->Loan_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_loan(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $data['start_date'] = to_sql_date($data['start_date']);
+        $data['end_date'] = to_sql_date($data['end_date']);
+        $this->load->model("hr_profile/Loan_model");
+        $success = $this->Loan_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_loan($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Loan_model");
+        $response = $this->Loan_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+// overtime
+
+    public function json_overtime($id){
+        $this->load->model("hr_profile/Overtime_model");
+        $data = $this->Overtime_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_overtime(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Overtime_model");
+        $success = $this->Overtime_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_overtime(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("hr_profile/Overtime_model");
+        $success = $this->Overtime_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_overtime($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Overtime_model");
+        $response = $this->Overtime_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+// commission
+
+    public function json_commission($id){
+        $this->load->model("hr_profile/Commissions_model");
+        $data = $this->Commissions_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_commission(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Commissions_model");
+        $success = $this->Commissions_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_commission(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("hr_profile/Commissions_model");
+        $success = $this->Commissions_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_commission($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Commissions_model");
+        $response = $this->Commissions_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    // statutory_deduction
+
+    public function json_statutory_deduction($id){
+        $this->load->model("hr_profile/Statutory_deduction_model");
+        $data = $this->Statutory_deduction_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_statutory_deduction(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model("hr_profile/Statutory_deduction_model");
+        $success = $this->Statutory_deduction_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_statutory_deduction(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("hr_profile/Statutory_deduction_model");
+        $success = $this->Statutory_deduction_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_statutory_deduction($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Statutory_deduction_model");
+        $response = $this->Statutory_deduction_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+
+    public function leaves($staff_id){
+
+        if ($this->input->is_ajax_request()) {
+            $this->hrmapp->get_table_data('my_leave_table', ['staff_id' => $staff_id]);
+        }
+        $ci = &get_instance();
+        $ci->load->model('branches/Branches_model');
+        $data['branches'] = $ci->Branches_model->getBranches();
+
+        $data['staff_id'] = $staff_id;
+        $this->load->view('details/leaves', $data);
+    }
+
+    public function projects($staff_id){
+        $data['staff_id'] = $staff_id;
+        $this->load->view('details/projects', $data);
+    }
+
+    public function tasks($staff_id){
+
+        $data['staff_id'] = $staff_id;
+
+        $this->load->view('details/tasks', $data);
+    }
+
+    public function payslips($staff_id){
+
+        $data['staff_id'] = $staff_id;
+        $this->load->view('details/payslips', $data);
+    }
+
+
+
+//document
+    public function json_document($id){
+        $this->load->model('Official_document_model');
+        $data = $this->Official_document_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_document(){
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $this->load->model('Official_document_model');
+        $success = $this->Official_document_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_document(){
+        $data = $this->input->post();
+        $this->load->model('Official_document_model');
+        $success = $this->Official_document_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_document($id)
+    {
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        if (!is_admin()) {
+            access_denied();
+        }
+        $this->load->model('Official_document_model');
+        $response = $this->Official_document_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+//work_experience
+    public function json_work_experience($id){
+        $this->load->model("Work_experience_model");
+        $data = $this->Work_experience_model->get($id);
+        echo json_encode($data);
+    }
+    public function add_work_experience(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $data['from_date'] = to_sql_date($data['from_date']);
+        $data['to_date'] = to_sql_date($data['to_date']);
+        $this->load->model("Work_experience_model");
+        $success = $this->Work_experience_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_work_experience($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("Work_experience_model");
+        $response = $this->Work_experience_model->delete($id);
+        if ($response) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    public function update_work_experience(){
+        $this->load->model("Work_experience_model");
+
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+
+        $data = $this->input->post();
+        $data['from_date'] = to_sql_date($data['from_date']);
+        $data['to_date'] = to_sql_date($data['to_date']);
+        $id = $this->input->post('id');
+        $success = $this->Work_experience_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+//qualification
+    public function json_qualification($id){
+        $this->load->model('hr_profile/Qualification_model');
+        $data = $this->Qualification_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_qualification(){
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $data['from_date'] = to_sql_date($data['from_date']);
+        $data['to_date'] = to_sql_date($data['to_date']);
+        $id = $this->input->post('id');
+        $this->load->model('hr_profile/Qualification_model');
+        $success = $this->Qualification_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_qualification(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $data['from_date'] = to_sql_date($data['from_date']);
+        $data['to_date'] = to_sql_date($data['to_date']);
+        $this->load->model('hr_profile/Qualification_model');
+        $success = $this->Qualification_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_qualification($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model('hr_profile/Qualification_model');
+        $response = $this->Qualification_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+//type
+
+    public function add_type($type_name){
+
+        $enArray=array();
+        if (option_exists($type_name) != Null){
+            $enArray = json_decode(get_option($type_name));
+        }else{
+            $enArray=array();
+        }
+        if ($this->input->get()){
+            $nameEn['key'] = $this->input->get('nameEn');
+            $nameEn['value'] = $this->input->get('nameEn');
+        }
+
+        array_push($enArray,$nameEn );
+        if (option_exists($type_name) != Null){
+            $en = update_option($type_name,json_encode($enArray));
+        }else{
+            $en = add_option($type_name,json_encode($enArray));
+        }
+
+        $success = $en ?true:false;
+        if($success){
+            set_alert('success', _l('added_successfully'));
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+
+    }
+
+    public function delete_type($name, $type_name)
+    {
+        if (!has_permission('settings', '', 'delete')) {
+            access_denied('settings');
+        }
+
+        $enArray = json_decode(get_option($type_name));
+
+        $new_array = [];
+
+        $name = urldecode($name);
+
+        foreach($enArray as $obj){
+            if($obj->key == $name)
+                continue;
+            $new_array[] = $obj;
+        }
+
+        $success = update_option($type_name,json_encode($new_array));
+
+        if($success){
+            set_alert('success', _l('deleted_successfully'));
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function update_type($type_name)
+    {
+        if (!has_permission('settings', '', 'delete')) {
+            access_denied('settings');
+        }
+
+        $old = $this->input->get('old');
+        $new = $this->input->get('new');
+
+        $enArray = json_decode(get_option($type_name));
+
+        $new_array = [];
+
+        $old = urldecode($old);
+
+        foreach($enArray as $obj){
+            if($obj->key == $old)
+                continue;
+            $new_array[] = $obj;
+        }
+
+        update_option($type_name,json_encode($new_array));
+
+        $enArray = $new_array;
+        if ($this->input->get()){
+            $nameEn['key'] = $this->input->get('new');
+            $nameEn['value'] = $this->input->get('new');
+        }
+
+        array_push($enArray,$nameEn );
+        if (option_exists($type_name) != Null){
+            $en = update_option($type_name,json_encode($enArray));
+        }else{
+            $en = add_option($type_name,json_encode($enArray));
+        }
+
+        $success = $en ?true:false;
+        if($success){
+            set_alert('success', _l('updated_successfully'));
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_leave_type(){
+        $data = $this->input->get();
+        $success = $this->Leave_type_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+//immigration
+
+    public function json_immigration($id){
+        $this->load->model("hr_profile/Immigration_model");
+        $data = $this->Immigration_model->get($id);
+        echo json_encode($data);
+    }
+    public function update_immigration(){
+        if (!has_permission('hr_profile', '', 'edit')) {
+            access_denied('hr_profile');
+        }
+        $data = $this->input->post();
+        $data['issue_date'] = to_sql_date($data['issue_date']);
+        $data['date_expiry'] = to_sql_date($data['date_expiry']);
+        $data['eligible_review_date'] = to_sql_date($data['eligible_review_date']);
+        $id = $this->input->post('id');
+        $success = $this->Immigration_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function add_immigration(){
+        if (!has_permission('hr_profile', '', 'create')) {
+            access_denied('hr_profile');
+        }
+        $data = $this->input->post();
+        $data['issue_date'] = to_sql_date($data['issue_date']);
+        $data['date_expiry'] = to_sql_date($data['date_expiry']);
+        $data['eligible_review_date'] = to_sql_date($data['eligible_review_date']);
+        $this->load->model("hr_profile/Immigration_model");
+        $success = $this->Immigration_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_immigration($id)
+    {
+        if (!has_permission('hr_profile', '', 'delete')) {
+            access_denied('hr_profile');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("hr_profile/Immigration_model");
+        $response = $this->Immigration_model->delete($id);
+        if ($response == true) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    /**
+     * delete contract template
+     * @param  [type] $id
+     * @return [type]
+     */
+    public function delete_contract_template_($id) {
+        if (!$id) {
+            redirect(admin_url('hr_profile/setting?group=contract_template'));
+        }
+        $response = $this->hr_profile_model->delete_contract_template($id);
+        if (is_array($response) && isset($response['referenced'])) {
+            set_alert('warning', _l('hr_is_referenced', _l('contract_template')));
+        } elseif ($response == true) {
+            set_alert('success', _l('deleted', _l('contract_template')));
+        } else {
+            set_alert('warning', _l('problem_deleting', _l('contract_template')));
+        }
+        redirect(admin_url('hr_profile/setting?group=contract_template'));
+    }
+}
     //*********OLD HR**********
     public function table_insurance()
     {

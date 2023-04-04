@@ -37,6 +37,11 @@ hooks()->add_action('admin_init', 'hr_profile_module_init_menu_items');
 hooks()->add_action('after_render_top_search', 'render_my_profile_icon');
 hooks()->add_action('hr_profile_init',HR_PROFILE_MODULE_NAME.'_appint');
 hooks()->add_action('admin_init', 'hr_init_hrmApp');
+hooks()->add_action('after_cron_settings_last_tab', 'add_immigration_reminder_tab');
+hooks()->add_action('after_cron_settings_last_tab_content', 'add_immigration_reminder_tab_content');
+hooks()->add_action('after_cron_run', 'immigration_reminders');
+
+
 hooks()->add_action('pre_activate_module', HR_PROFILE_MODULE_NAME.'_preactivate');
 hooks()->add_action('pre_deactivate_module', HR_PROFILE_MODULE_NAME.'_predeactivate');
 
