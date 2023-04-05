@@ -7980,20 +7980,7 @@ class Hr_profile extends AdminController {
 	 * @param  [type] $id
 	 * @return [type]
 	 */
-	public function delete_contract_template_($id) {
-		if (!$id) {
-			redirect(admin_url('hr_profile/setting?group=contract_template'));
-		}
-		$response = $this->hr_profile_model->delete_contract_template($id);
-		if (is_array($response) && isset($response['referenced'])) {
-			set_alert('warning', _l('hr_is_referenced', _l('contract_template')));
-		} elseif ($response == true) {
-			set_alert('success', _l('deleted', _l('contract_template')));
-		} else {
-			set_alert('warning', _l('problem_deleting', _l('contract_template')));
-		}
-		redirect(admin_url('hr_profile/setting?group=contract_template'));
-	}
+
     //salary
     public function salary($staff_id){
 
@@ -8759,7 +8746,6 @@ class Hr_profile extends AdminController {
         }
         redirect(admin_url('hr_profile/setting?group=contract_template'));
     }
-}
     //*********OLD HR**********
     public function table_insurance()
     {

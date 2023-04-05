@@ -1108,15 +1108,16 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_overtime')) {
 
 if (!option_exists('deduction_type')) {
     $value = '[{"key":"Social Security System","value":"Social Security System"},{"key":"Health Insurance Corporation","value":"Health Insurance Corporation"},{"key":"Home Development Mutual Fund","value":"Home Development Mutual Fund"},{"key":"Withholding Tax on Wages","value":"Withholding Tax on Wages"},{"key":"Other Statutory Deduction","value":"Other Statutory Deduction"}]';
-    add_option('deduction_type',$value);
+    add_option('deduction_type', $value);
 
-if (!$CI->db->field_exists('is_notification', db_prefix() . 'staff_insurance')) {
-    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `is_notification` int(11) DEFAULT 0;");
+    if (!$CI->db->field_exists('is_notification', db_prefix() . 'staff_insurance')) {
+        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `is_notification` int(11) DEFAULT 0;");
+    }
+    if (!$CI->db->field_exists('recurring_from', db_prefix() . 'staff_insurance')) {
+        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `recurring_from` int(11) DEFAULT 0;");
+    }
+    if (!$CI->db->field_exists('deadline_notified', db_prefix() . 'staff_insurance')) {
+        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `deadline_notified` int(11) DEFAULT 0;");
+    }
+    add_option('hr_profile_hide_menu', 1, 1);
 }
-if (!$CI->db->field_exists('recurring_from', db_prefix() . 'staff_insurance')) {
-    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `recurring_from` int(11) DEFAULT 0;");
-}
-if (!$CI->db->field_exists('deadline_notified', db_prefix() . 'staff_insurance')) {
-    $CI->db->query("ALTER TABLE `".db_prefix() ."staff_insurance` ADD `deadline_notified` int(11) DEFAULT 0;");
-}
-  add_option('hr_profile_hide_menu', 1, 1);
