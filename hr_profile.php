@@ -531,8 +531,91 @@ function hr_init_hrmApp(){
     $CI->load->library(HR_PROFILE_MODULE_NAME . '/' . 'hrmApp');
 }
 
+
+function hr_profile_appint(){
+    $CI = & get_instance();
+    require_once 'libraries/gtsslib.php';
+    $hr_profile_api = new HRProfileLic();
+    $hr_profile_gtssres = $hr_profile_api->verify_license(true);
+    if(!$hr_profile_gtssres || ($hr_profile_gtssres && isset($hr_profile_gtssres['status']) && !$hr_profile_gtssres['status'])){
+        $CI->app_modules->deactivate(HR_PROFILE_MODULE_NAME);
+        set_alert('danger', "One of your modules failed its verification and got deactivated. Please reactivate or contact support.");
+        redirect(admin_url('modules'));
+    }
+}
+
 function hr_profile_preactivate($module_name){
+
 }
 
 function hr_profile_predeactivate($module_name){
+    if ($module_name['system_name'] == HR_PROFILE_MODULE_NAME) {
+        require_once 'libraries/gtsslib.php';
+        $hr_profile_api = new HRProfileLic();
+        $hr_profile_api->deactivate_license();
+    }
 }
+
+function immigration_reminders()
+{
+    $CI = & get_instance();
+    $reminder_before = get_option('hr_immigration_reminder_notification_before');
+
+    // INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES (NULL, 'hr_document_reminder_notification_before', '3', '1');
+
+    $CI->db->where('date_expiry IS NOT NULL');
+    $CI->db->where('deadline_notified', 0);
+    // $CI->db->where('is_notification', 1);
+
+    $documents = $CI->db->get(db_prefix() . 'hr_immigration')->result_array();
+
+    $now   = new DateTime(date('Y-m-d'));
+
+    $notifiedUsers = [];
+    foreach ($documents as $document) {
+        if (date('Y-m-d', strtotime($document['date_expiry'])) >= date('Y-m-d')) {
+            $end_date = new DateTime($document['date_expiry']);
+            $diff    = $end_date->diff($now)->format('%a');
+            // Check if difference between start date and date_expiry is the same like the reminder before
+            // In this case reminder wont be sent becuase the document it too short
+            $end_date                 = strtotime($document['date_expiry']);
+            $start_and_end_date_diff = $end_date;
+            $start_and_end_date_diff = floor($end_date / (60 * 60 * 24));
+
+            if (date('Y-m-d', strtotime($document['eligible_review_date'])) == date('Y-m-d')){
+                $CI->db->where('admin', 1);
+                $assignees = $CI->staff_model->get();
+
+                foreach ($assignees as $member) {
+                    $row = $CI->db->get(db_prefix() . 'staff')->row();
+                    if ($row) {
+                        $notified = add_notification([
+                            'description'     => 'not_document_deadline_reminder',
+                            'touserid'        => $member['staffid'],
+                            'fromcompany'     => 1,
+                            'fromuserid'      => null,
+                            'link'            => 'hr_profile/general/' . $document['staff_id'] . '?group=immigration',
+
+                        ]);
+
+                        if ($notified) {
+                            array_push($notifiedUsers, $member['staffid']);
+                        }
+
+                        send_mail_template('document_deadline_reminder_to_staff', $row->email, $member['staffid'], $document['id']);
+
+
+                        $CI->db->where('id', $document['id']);
+                        $CI->db->update(db_prefix() . 'hr_immigration', [
+                            'deadline_notified' => 1,
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+
+    pusher_trigger_notification($notifiedUsers);
+
+}
+
