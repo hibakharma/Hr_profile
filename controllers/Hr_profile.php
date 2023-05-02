@@ -3356,31 +3356,41 @@ class Hr_profile extends AdminController {
             if ($this->input->is_ajax_request()) {
                 if($group == 'immigration'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_immigrations_table', ['staff_id' => $id]);
+                   // $this->hrmapp->get_table_data('my_immigrations_table', ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'my_immigrations_table'), ['staff_id' => $id]);
+
                 }
                 elseif($group == 'bank_account'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_bank_account_table', ['staff_id' => $id]);
+                    //$this->hrmapp->get_table_data('my_bank_account_table', ['staff_id' => $id]);
+                  $this->app->get_table_data(module_views_path('hr_profile', 'my_bank_account_table'), ['staff_id' => $id]);
+
                 }
                 if($group == 'work_experience'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_work_experience_table', ['staff_id' => $id]);
+                   // $this->hrmapp->get_table_data('my_work_experience_table', ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'my_work_experience_table'), ['staff_id' => $id]);
                 }
 
                 elseif($group == 'emergency_contacts'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_emergency_contacts_table', ['staff_id' => $id]);
+                 //  $this->hrmapp->get_table_data('my_emergency_contacts_table', ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'my_emergency_contacts_table'), ['staff_id' => $id]);
                 }
 
                 if($group == 'qualification'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_qualifications_table', ['staff_id' => $id]);
+                   // $this->hrmapp->get_table_data('my_qualifications_table', ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'my_qualifications_table'), ['staff_id' => $id]);
+
                 }
 
 
                 if($group == 'document'){
                     $this->load->library("hr_profile/HrmApp");
-                    $this->hrmapp->get_table_data('my_document_table', ['staff_id' => $id]);
+                  //  $this->hrmapp->get_table_data('my_document_table', ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'my_document_table'), ['staff_id' => $id]);
+
                 }}
 			if ($data['group'] == 'attach') {
 				$data['hr_profile_staff'] = $this->hr_profile_model->get_hr_profile_attachments($id);
@@ -8445,6 +8455,123 @@ class Hr_profile extends AdminController {
         }
         redirect($_SERVER['HTTP_REFERER']);
     }
+
+
+//emergency_contacts
+    public function json_emergency_contacts($id){
+        $this->load->model("emergency_contacts_model");
+        $data = $this->emergency_contacts_model->get($id);
+        echo json_encode($data);
+    }
+    public function add_emergency_contacts(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("emergency_contacts_model");
+        $success = $this->emergency_contacts_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_emergency_contacts($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("emergency_contacts_model");
+        $response = $this->emergency_contacts_model->delete($id);
+        if ($response) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    public function update_emergency_contacts(){
+        $this->load->model("emergency_contacts_model");
+
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $success = $this->emergency_contacts_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    //bank_account
+    public function json_bank_account($id){
+        $this->load->model("bank_account_model");
+        $data = $this->bank_account_model->get($id);
+        echo json_encode($data);
+    }
+    public function add_bank_account(){
+        if (!has_permission('hr', '', 'create')) {
+            access_denied('hr');
+        }
+        $data = $this->input->post();
+        $this->load->model("bank_account_model");
+        $success = $this->bank_account_model->add($data);
+        if($success)
+            set_alert('success', _l('added_successfully'));
+        else
+            set_alert('warning', 'Problem Creating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function delete_bank_account($id)
+    {
+        if (!has_permission('hr', '', 'delete')) {
+            access_denied('hr');
+        }
+        if (!$id) {
+            redirect($_SERVER['HTTP_REFERER']);
+        }
+        $this->load->model("bank_account_model");
+        $response = $this->bank_account_model->delete($id);
+        if ($response) {
+            set_alert('success', _l('deleted_successfully'));
+        } else {
+            set_alert('warning', 'Problem deleting');
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+    public function update_bank_account(){
+        $this->load->model("bank_account_model");
+
+        if (!has_permission('hr', '', 'edit')) {
+            access_denied('hr');
+        }
+
+        $data = $this->input->post();
+        $id = $this->input->post('id');
+        $success = $this->bank_account_model->update($data, $id);
+        if($success)
+            set_alert('success', _l('updated_successfully'));
+        else
+            set_alert('warning', 'Problem Updating');
+        redirect($_SERVER['HTTP_REFERER']);
+    }
+
+
+
+
+
+
+
+
 //work_experience
     public function json_work_experience($id){
         $this->load->model("Work_experience_model");

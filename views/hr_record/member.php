@@ -119,7 +119,7 @@
 <script>
     $(function(){
         initDataTable('.table-<?php echo $group ?>', window.location.href);
-    });
+         });
 </script>
 
 <?php
