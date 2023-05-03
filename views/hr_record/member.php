@@ -32,30 +32,29 @@
                     <ul class="nav navbar-pills navbar-pills-flat nav-tabs nav-stacked">
                         <?php
                         $i = 0;
+                        $icon['profile'] = '<span class="glyphicon glyphicon-user"></span>';
+                        $icon['contract'] = '<span class="glyphicon glyphicon-file"></span>';
+                        $icon['dependent_person'] = '<span class="fa fa-group menu-icon"></span>';
+                        $icon['training'] = '<span class="fa fa-graduation-cap fa-fw fa-lg"></span>';
+                        $icon['bonus_discipline'] = '<span class="fa fa-bell-o fa-fw fa-lg"></span>';
+                        $icon['attach'] = '<span class="fa fa-link"></span>';
+                        $icon['staff_project'] = '<span class="fa fa-bars menu-icon"></span>';
+                        $icon['other'] = '<span class="fa fa-tasks menu-icon"></span>';
+                        $icon['immigration'] = '<span class="fa fa-tasks menu-icon"></span>';
+                        $icon['document'] =  '<span class="glyphicon glyphicon-file"></span>';
+                        $icon['qualification'] = '<span class="fa fa-graduation-cap fa-fw fa-lg"></span>';
+                        $icon['work_experience'] = '<span class="fa fa-tasks menu-icon"></span>';
+                        $icon['emergency_contacts'] = '<span class="fa fa-bars menu-icon"></span>';
+                        $icon['bank_account'] = '<span class="glyphicon glyphicon-file"></span>';
+
+
                         foreach($tab as $group_item){
-                            ?>
+                          if(is_admin() || has_permission($group_item,$staffid,'view')){
+                                ?>
+
                             <li<?php if($group_item == $group){echo " class='active'"; } ?>>
                                 <a href="<?php echo admin_url('hr_profile/member/'.$staffid.'/'.$group_item); ?>" data-group="<?php echo html_entity_decode($group_item); ?>">
                                     <?php
-                                    $icon['profile'] = '<span class="glyphicon glyphicon-user"></span>';
-                                    $icon['contract'] = '<span class="glyphicon glyphicon-file"></span>';
-                                    $icon['dependent_person'] = '<span class="fa fa-group menu-icon"></span>';
-                                    $icon['training'] = '<span class="fa fa-graduation-cap fa-fw fa-lg"></span>';
-                                    $icon['bonus_discipline'] = '<span class="fa fa-bell-o fa-fw fa-lg"></span>';
-                                    $icon['attach'] = '<span class="fa fa-link"></span>';
-                                    $icon['staff_project'] = '<span class="fa fa-bars menu-icon"></span>';
-                                    $icon['other'] = '<span class="fa fa-tasks menu-icon"></span>';
-                                    $icon['immigration'] = '<span class="fa fa-tasks menu-icon"></span>';
-                                    $icon['document'] =  '<span class="glyphicon glyphicon-file"></span>';
-                                    $icon['qualification'] = '<span class="fa fa-graduation-cap fa-fw fa-lg"></span>';
-                                    $icon['work_experience'] = '<span class="fa fa-tasks menu-icon"></span>';
-                                    $icon['emergency_contacts'] = '<span class="fa fa-bars menu-icon"></span>';
-                                    $icon['bank_account'] = '<span class="glyphicon glyphicon-file"></span>';
-
-
-
-
-
 
                                     if($group_item == 'profile'){
                                         echo html_entity_decode($icon[$group_item] .' '. _l('hr_staff_profile'));
@@ -91,7 +90,7 @@
                                     ?>
                                 </a>
                             </li>
-                        <?php } ?>
+                        <?php } } ?>
                     </ul>
                 </div>
             <?php } ?>

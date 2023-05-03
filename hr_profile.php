@@ -496,6 +496,28 @@ function hr_profile_permissions()
     register_staff_capabilities('hrm_report', $dashboard, _l('HR_report'));
     //Settings
     register_staff_capabilities('hrm_setting', $capabilities, _l('HR_setting'));
+    //hr_staff_profile
+    register_staff_capabilities('profile', $capabilities, _l('profile'));
+    //contract
+    register_staff_capabilities('contract', $capabilities, _l('contract'));
+    //dependent_person
+    register_staff_capabilities('dependent_person', $capabilities, _l('dependent_person'));
+    //hr_training
+    register_staff_capabilities('training', $capabilities, _l('training'));
+    //hr_attach
+    register_staff_capabilities('attach', $capabilities, _l('attach'));
+    //hr_immigration
+    register_staff_capabilities('immigration', $capabilities, _l('immigration'));
+    //hr_document
+    register_staff_capabilities('document', $capabilities, _l('document'));
+    //hr_qualification
+    register_staff_capabilities('qualification', $capabilities, _l('qualification'));
+    //hr_work_experience
+    register_staff_capabilities('work_experience', $capabilities, _l('work_experience'));
+    //hr_emergency_contacts
+    register_staff_capabilities('emergency_contacts', $capabilities, _l('emergency_contacts'));
+    //hr_bank_account
+    register_staff_capabilities('bank_account', $capabilities_2, _l('bank_account'));
 
 }
 

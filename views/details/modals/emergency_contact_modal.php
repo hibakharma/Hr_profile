@@ -8,7 +8,7 @@
                     <span class="edit-title"><?php echo _l("edit"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open(admin_url('hr/general/update_emergency_contact'),array('id'=>'form_transout')); ?>
+            <?php echo form_open(admin_url('hr_profile/update_emergency_contact'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <?php echo form_hidden('staff_id', $staff_id); ?>
             <div class="modal-body">
@@ -115,7 +115,7 @@
                     <span class="add-title"><?php echo _l("add"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open(admin_url('hr/general/add_emergency_contact'),array('id'=>'form_transout')); ?>
+            <?php echo form_open(admin_url('hr_profile/add_emergency_contact'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('staff_id', $staff_id); ?>
             <div class="modal-body">
                 <div class="row">
@@ -222,7 +222,7 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr/general/json_emergency_contact') ?>/" + id,
+            url : "<?php echo site_url('hr_profile/json_emergency_contact') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)

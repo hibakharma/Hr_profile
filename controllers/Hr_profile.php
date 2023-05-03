@@ -8458,18 +8458,18 @@ class Hr_profile extends AdminController {
 
 
 //emergency_contacts
-    public function json_emergency_contacts($id){
-        $this->load->model("emergency_contacts_model");
-        $data = $this->emergency_contacts_model->get($id);
+    public function json_emergency_contact($id){
+        $this->load->model("emergency_contact_model");
+        $data = $this->emergency_contact_model->get($id);
         echo json_encode($data);
     }
-    public function add_emergency_contacts(){
-        if (!has_permission('hr', '', 'create')) {
-            access_denied('hr');
-        }
+    public function add_emergency_contact(){
+       // if(!is_admin() ||!has_permission('hr', '', 'create')|| !has_permission('emergency_contacts','','create')){
+         //   access_denied('hr');
+     //   }
         $data = $this->input->post();
-        $this->load->model("emergency_contacts_model");
-        $success = $this->emergency_contacts_model->add($data);
+        $this->load->model("emergency_contact_model");
+        $success = $this->emergency_contact_model->add_emergency_contacts($data);
         if($success)
             set_alert('success', _l('added_successfully'));
         else
@@ -8485,8 +8485,8 @@ class Hr_profile extends AdminController {
         if (!$id) {
             redirect($_SERVER['HTTP_REFERER']);
         }
-        $this->load->model("emergency_contacts_model");
-        $response = $this->emergency_contacts_model->delete($id);
+        $this->load->model("emergency_contact_model");
+        $response = $this->emergency_contact_model->delete_emergency_contacts($id);
         if ($response) {
             set_alert('success', _l('deleted_successfully'));
         } else {
@@ -8495,7 +8495,7 @@ class Hr_profile extends AdminController {
         redirect($_SERVER['HTTP_REFERER']);
     }
     public function update_emergency_contacts(){
-        $this->load->model("emergency_contacts_model");
+        $this->load->model("emergency_contact_model");
 
         if (!has_permission('hr', '', 'edit')) {
             access_denied('hr');
@@ -8503,7 +8503,7 @@ class Hr_profile extends AdminController {
 
         $data = $this->input->post();
         $id = $this->input->post('id');
-        $success = $this->emergency_contacts_model->update($data, $id);
+        $success = $this->emergency_contact_model->update_emergency_contacts($data, $id);
         if($success)
             set_alert('success', _l('updated_successfully'));
         else

@@ -94,7 +94,7 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr_profile//json_work_experience') ?>/" + id,
+            url : "<?php echo site_url('hr_profile/json_work_experience') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)

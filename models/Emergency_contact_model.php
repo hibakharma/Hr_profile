@@ -23,7 +23,7 @@ class Emergency_contact_model extends App_Model{
         return $this->db->get($this->table_name)->result_array();
     }
 
-    public function add($data){
+    public function add_emergency_contacts($data){
         $this->db->insert($this->table_name, $data);
         $insert_id = $this->db->insert_id();
         if($insert_id){
@@ -33,7 +33,7 @@ class Emergency_contact_model extends App_Model{
         return false;
     }
 
-    public function update($data, $id){
+    public function update_emergency_contacts($data, $id){
         $this->db->where('id', $id);
         $this->db->update($this->table_name, $data);
         if($this->db->affected_rows() > 0){
@@ -43,7 +43,7 @@ class Emergency_contact_model extends App_Model{
         return false;
     }
 
-    public function delete($id, $simpleDelete = false){
+    public function delete_emergency_contacts($id, $simpleDelete = false){
         $this->db->where('id', $id);
         $this->db->delete($this->table_name);
         if ($this->db->affected_rows() > 0) {

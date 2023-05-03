@@ -27,7 +27,28 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_profile_immigration')) {
     `staff_id` int(11) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
 }
-
+if (!$CI->db->table_exists(db_prefix() . 'hr_emergency_contact')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_emergency_contact` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `relation` varchar(255) NOT NULL, 
+    `email` varchar(255) NOT NULL, 
+    `personal` varchar(255) NOT NULL, 
+    `is_primary` int(1) NOT NULL, 
+    `is_dependent` int(1) NOT NULL, 
+    `name` varchar(255) NOT NULL, 
+    `address_1` varchar(255) NOT NULL, 
+    `address_2` varchar(255) NOT NULL, 
+    `work` varchar(255) NOT NULL,
+    `ext` varchar(255) NOT NULL,
+    `home` varchar(255) NOT NULL,
+    `mobile` varchar(255) NOT NULL,
+    `city` varchar(255) NOT NULL, 
+    `state` varchar(255) NOT NULL, 
+    `zip_code` int(11) NOT NULL,
+    `country` varchar(255) NOT NULL, 
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
 if (!$CI->db->field_exists('manager_id' ,db_prefix() . 'departments')) { 
   $CI->db->query('ALTER TABLE `' . db_prefix() . "departments`
     ADD COLUMN `manager_id` INT(11) NULL DEFAULT 0;");
