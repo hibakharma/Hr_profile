@@ -28,6 +28,9 @@ foreach ($rResult as $aRow) {
 
     $options = ''; if (has_permission('hr', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_bank_account', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
     if (has_permission('hr', '', 'delete')) $options .= icon_btn('hr_profile/delete_bank_account/' . $aRow['id'], 'remove', 'btn-danger _delete');
+
+        $options .= '<a href="' . admin_url('hr_profile/bank_account_view_edit/' . $aRow['id']) . '">' . _l('hr_view') . '</a>';
+
     $row[]   = $options;
 
     $output['aaData'][] = $row;

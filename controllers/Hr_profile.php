@@ -8456,6 +8456,24 @@ class Hr_profile extends AdminController {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    /**
+     * document view edit
+     * @param  string $id
+     * @return view
+     */
+    public function document_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("Official_document_model");
+
+        if (!has_permission('qualification', '', 'view')) {
+            access_denied('qualification');
+        }
+
+        $data['document'] = $this->Official_document_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_document', $data);
+    }
+
 
 //emergency_contacts
     public function json_emergency_contact($id){
@@ -8510,6 +8528,30 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem Updating');
         redirect($_SERVER['HTTP_REFERER']);
     }
+    /**
+     * emergency_contacts view edit
+     * @param  string $id
+     * @return view
+     */
+    public function emergency_contacts_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("emergency_contact_model");
+
+        if (!has_permission('emergency_contacts', '', 'view')) {
+            access_denied('emergency_contacts');
+        }
+        if ($id == '') {
+            $title = _l('add_new', _l('emergency_contacts'));
+        } else {
+
+            $data['emergency_contacts'] = $this->emergency_contact_model->get($id);
+
+            $this->load->view('hr_profile/hr_record/view_edit_emergency_contacts', $data);
+
+        }
+
+    }
+
 
     //bank_account
     public function json_bank_account($id){
@@ -8564,7 +8606,30 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem Updating');
         redirect($_SERVER['HTTP_REFERER']);
     }
+    //**************
+    /**
+     * bank_account view edit
+     * @param  string $id
+     * @return view
+     */
+    public function bank_account_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("bank_account_model");
 
+        if (!has_permission('bank_account', '', 'view')) {
+            access_denied('bank_account');
+        }
+        if ($id == '') {
+            $title = _l('add_new', _l('bank_account'));
+        } else {
+
+            $data['bank_account'] = $this->bank_account_model->get($id);
+
+            $this->load->view('hr_profile/hr_record/view_edit_BankAccount', $data);
+
+        }
+
+    }
 
 
 
@@ -8630,6 +8695,24 @@ class Hr_profile extends AdminController {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    /**
+     * work_experience view edit
+     * @param  string $id
+     * @return view
+     */
+    public function work_experience_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("Work_experience_model");
+
+        if (!has_permission('work_experience', '', 'view')) {
+            access_denied('work_experience');
+        }
+
+            $data['work_experience'] = $this->Work_experience_model->get($id);
+
+            $this->load->view('hr_profile/hr_record/view_edit_work_experience', $data);
+    }
+
 //qualification
     public function json_qualification($id){
         $this->load->model('hr_profile/Qualification_model');
@@ -8685,6 +8768,24 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem deleting');
         }
         redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    /**
+     * qualification view edit
+     * @param  string $id
+     * @return view
+     */
+    public function qualifications_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("hr_profile/Qualification_model");
+
+        if (!has_permission('qualification', '', 'view')) {
+            access_denied('qualification');
+        }
+
+        $data['qualification'] = $this->Qualification_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_qualification', $data);
     }
 //type
 
@@ -8852,6 +8953,24 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem deleting');
         }
         redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    /**
+     * immigration view edit
+     * @param  string $id
+     * @return view
+     */
+    public function immigrations_view_edit($id = '', $parent_id = '')
+    {
+        $this->load->model("hr_profile/Immigration_model");
+
+        if (!has_permission('Immigration', '', 'view')) {
+            access_denied('Immigration');
+        }
+
+        $data['Immigration'] = $this->Immigration_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_Immigration', $data);
     }
 
     /**
