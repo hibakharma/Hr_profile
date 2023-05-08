@@ -8003,23 +8003,23 @@ class Hr_profile extends AdminController {
         }
         if ($this->input->is_ajax_request()) {
             if($group == 'commissions'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_commissions_table', ['staff_id' => $staff_id]);
+               $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_commissions_table'),['staff_id' => $staff_id]);
+
             }elseif($group == 'other_payments'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_other_payments_table', ['staff_id' => $staff_id]);
+               $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_other_payments_table'),['staff_id' => $staff_id]);
+
             }elseif($group == 'loan'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_loan_table', ['staff_id' => $staff_id]);
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_loan_table'),['staff_id' => $staff_id]);
+
             }elseif($group == 'overtime'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_overtime_table', ['staff_id' => $staff_id]);
+               $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_overtime_table'),['staff_id' => $staff_id]);
+
             }elseif($group == 'allowances'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_allowances_table', ['staff_id' => $staff_id]);
+               $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_allowances_table'),['staff_id' => $staff_id]);
+
             }elseif($group == 'statutory_deductions'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('my_statutory_deductions_table', ['staff_id' => $staff_id]);
+                 $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_statutory_deductions_table'),['staff_id' => $staff_id]);
+
             }
         }
 
@@ -8104,6 +8104,31 @@ class Hr_profile extends AdminController {
         }
         redirect($_SERVER['HTTP_REFERER']);
     }
+    /**
+     * allowance view edit
+     * @param  string $id
+     * @return view
+     */
+    public function allowance_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Allowances_model");
+
+        if (!has_permission('allowances', '', 'view')) {
+            access_denied('allowances');
+        }
+        $data['allowances'] = $this->Allowances_model->get($id);
+
+            $this->load->view('hr_profile/hr_record/view_edit_allowances', $data);
+
+
+
+    }
+
+
+
+
+
+
 // other_payment
 
     public function json_other_payment($id){
@@ -8156,6 +8181,19 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem deleting');
         }
         redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function other_payment_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Other_payment_model");
+
+        if (!has_permission('other_payment', '', 'view')) {
+            access_denied('other_payment');
+        }
+        $data['other_payment'] = $this->Other_payment_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_other_payments', $data);
+
     }
 // loan
 
@@ -8215,6 +8253,25 @@ class Hr_profile extends AdminController {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    /**
+     * loan view edit
+     * @param  string $id
+     * @return view
+     */
+    public function loan_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Loan_model");
+
+        if (!has_permission('loan', '', 'view')) {
+            access_denied('loan');
+        }
+        $data['loan'] = $this->Loan_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_loan', $data);
+
+    }
+
+
 // overtime
 
     public function json_overtime($id){
@@ -8267,6 +8324,19 @@ class Hr_profile extends AdminController {
             set_alert('warning', 'Problem deleting');
         }
         redirect($_SERVER['HTTP_REFERER']);
+    }
+
+    public function overtime_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Overtime_model");
+
+        if (!has_permission('overtime', '', 'view')) {
+            access_denied('overtime');
+        }
+        $data['overtime'] = $this->Overtime_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_overtime', $data);
+
     }
 // commission
 
@@ -8321,6 +8391,28 @@ class Hr_profile extends AdminController {
         }
         redirect($_SERVER['HTTP_REFERER']);
     }
+
+    /**
+     * commissions view edit
+     * @param  string $id
+     * @return view
+     */
+    public function commissions_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Commissions_model");
+
+        if (!has_permission('commissions', '', 'view')) {
+            access_denied('commissions');
+        }
+        $data['commissions'] = $this->Commissions_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_commissions', $data);
+
+    }
+
+
+
+
     // statutory_deduction
 
     public function json_statutory_deduction($id){
@@ -8375,6 +8467,19 @@ class Hr_profile extends AdminController {
         redirect($_SERVER['HTTP_REFERER']);
     }
 
+    public function statutory_deduction_view_edit($id = '')
+    {
+        $this->load->model("hr_profile/Statutory_deduction_model");
+
+        if (!has_permission('statutory_deduction', '', 'view')) {
+            access_denied('statutory_deduction');
+        }
+        $data['statutory_deduction'] = $this->Statutory_deduction_model->get($id);
+
+        $this->load->view('hr_profile/hr_record/view_edit_statutory_deductions', $data);
+
+    }
+
 
     public function leaves($staff_id){
 
@@ -8406,6 +8511,7 @@ class Hr_profile extends AdminController {
         $data['staff_id'] = $staff_id;
         $this->load->view('details/payslips', $data);
     }
+
 
 
 
@@ -8960,15 +9066,15 @@ class Hr_profile extends AdminController {
      * @param  string $id
      * @return view
      */
-    public function immigrations_view_edit($id = '', $parent_id = '')
+    public function immigrations_view_edit($id = '')
     {
-        $this->load->model("hr_profile/Immigration_model");
+        $this->load->model("hr_profile/immigration_model");
 
-        if (!has_permission('Immigration', '', 'view')) {
-            access_denied('Immigration');
+        if (!has_permission('immigration', '', 'view')) {
+            access_denied('immigration');
         }
 
-        $data['Immigration'] = $this->Immigration_model->get($id);
+        $data['Immigration'] = $this->immigration_model->get($id);
 
         $this->load->view('hr_profile/hr_record/view_edit_Immigration', $data);
     }

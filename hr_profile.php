@@ -519,6 +519,23 @@ function hr_profile_permissions()
     //hr_bank_account
     register_staff_capabilities('bank_account', $capabilities_2, _l('bank_account'));
 
+
+
+    //hr_update_salary
+    register_staff_capabilities('update_salary', $capabilities_2, _l('update_salary'));
+//hr_allowances
+    register_staff_capabilities('allowances', $capabilities_2, _l('allowances'));
+//hr_commissions
+    register_staff_capabilities('commissions', $capabilities_2, _l('commissions'));
+//hr_loan
+    register_staff_capabilities('loan', $capabilities_2, _l('loan'));
+//hr_statutory_deductions
+    register_staff_capabilities('statutory_deductions', $capabilities_2, _l('statutory_deductions'));
+//hr_other_payments
+    register_staff_capabilities('other_payments', $capabilities_2, _l('other_payments'));
+//hr_overtime
+    register_staff_capabilities('overtime', $capabilities_2, _l('overtime'));
+
 }
 
 

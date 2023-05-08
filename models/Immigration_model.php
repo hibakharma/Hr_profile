@@ -61,7 +61,7 @@ class Immigration_model extends App_Model{
     }
 
     public function get($id=''){
-        $this->load->database;
+
         if(is_numeric($id)){
             $this->db->where('id' ,$id);
             return $this->db->get($this->table_name)->row();

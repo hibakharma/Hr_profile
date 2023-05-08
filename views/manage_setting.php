@@ -80,10 +80,7 @@ if($group == 'reception_staff'){
 hooks()->do_action('settings_tab_footer', $tab); ?>
 <script>
     $(function(){
-        initDataTable('.table-<?php echo $group ?>',  'setting?group=<?php echo $group ?>');
-
-
-
+        initDataTable('.table-<?php echo $group ?>', window.location.href);
     });
 </script>
 <script type="text/javascript">
