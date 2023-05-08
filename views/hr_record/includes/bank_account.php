@@ -1,6 +1,6 @@
  <?php $this->load->view('details/modals/bank_account') ?>
  <div class="_buttons">
-    <?php if (has_permission('hr', '', 'create')){ ?><a href="#" class="btn btn-info pull-left" data-toggle="modal" data-target="#add_bank_account"><?php echo _l('new_bank_account'); ?></a><?php } ?>
+    <?php if (has_permission('bank_account', '', 'create')){ ?><a href="#" class="btn btn-info pull-left" data-toggle="modal" data-target="#add_bank_account"><?php echo _l('new_bank_account'); ?></a><?php } ?>
 </div>
 <div class="clearfix"></div>
 <hr class="hr-panel-heading" />

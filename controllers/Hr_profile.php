@@ -8187,8 +8187,8 @@ class Hr_profile extends AdminController {
     {
         $this->load->model("hr_profile/Other_payment_model");
 
-        if (!has_permission('other_payment', '', 'view')) {
-            access_denied('other_payment');
+        if (!has_permission('other_payments', '', 'view')) {
+            access_denied('other_payments');
         }
         $data['other_payment'] = $this->Other_payment_model->get($id);
 

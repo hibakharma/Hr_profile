@@ -1,6 +1,6 @@
 			<div class="row">
 				<div class="col-md-12">
-					<?php if($member->staffid == get_staff_user_id() || has_permission('hrm_hr_records', '', 'create') || has_permission('hrm_hr_records', '', 'edit')){ ?>
+					<?php if($member->staffid == get_staff_user_id() || has_permission('dependent_person', '', 'create') || has_permission('hrm_hr_records', '', 'edit')){ ?>
 						<div class="_buttons">
 							<a href="#" onclick="new_dependent_person(); return false;" class="btn btn-info pull-left display-block">
 								<?php echo _l('hr_add_dependents'); ?>

@@ -49,8 +49,8 @@ foreach ($rResult as $aRow) {
 
     // end file
 
-    $options = ''; if (has_permission('hr_profile', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_immigration', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
-    if (has_permission('hr_profile', '', 'delete')) $options .= icon_btn('hr_profile/delete_immigration/' . $aRow['id'], 'remove', 'btn-danger _delete');
+    $options = ''; if (has_permission('immigration', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_immigration', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
+    if (has_permission('immigration', '', 'delete')) $options .= icon_btn('hr_profile/delete_immigration/' . $aRow['id'], 'remove', 'btn-danger _delete');
     $options .= '<a href="' . admin_url('hr_profile/immigrations_view_edit/' . $aRow['id']) . '">' . _l('hr_view') . '</a>';
 
     $row[]   = $options;

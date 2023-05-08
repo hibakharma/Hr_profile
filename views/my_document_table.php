@@ -47,9 +47,9 @@ foreach ($rResult as $aRow) {
 
     // end file
 
-    $options = ''; if (has_permission('hr', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_document', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
+    $options = ''; if (has_permission('document', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_document', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
     //$options .= icon_btn(base_url().$aRow['document_file'], 'download', 'btn-default','download');
-    if (has_permission('hr', '', 'delete')) $options .= icon_btn('hr_profile/delete_document/' . $aRow['id'], 'remove', 'btn-danger _delete');
+    if (has_permission('document', '', 'delete')) $options .= icon_btn('hr_profile/delete_document/' . $aRow['id'], 'remove', 'btn-danger _delete');
     $options .= '<a href="' . admin_url('hr_profile/document_view_edit/' . $aRow['id']) . '">' . _l('hr_view') . '</a>';
 
     $row[]   = $options;

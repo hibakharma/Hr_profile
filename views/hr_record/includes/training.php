@@ -123,7 +123,7 @@ $current_date = date('Y-m-d');
 	<br>
 
 	<?php
-if (has_permission('hrm_dependent_person', '', 'create') || ($member->staffid == get_staff_user_id())) {
+if (has_permission('training', '', 'create') || ($member->staffid == get_staff_user_id())) {
 	?>
 		<button class="btn btn-info" type="button" onclick="create_trainings();"><?php echo _l('hr_more_training_sessions'); ?></button>
 	<?php }?>
