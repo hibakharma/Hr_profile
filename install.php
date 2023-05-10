@@ -1129,16 +1129,123 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_overtime')) {
 
 if (!option_exists('deduction_type')) {
     $value = '[{"key":"Social Security System","value":"Social Security System"},{"key":"Health Insurance Corporation","value":"Health Insurance Corporation"},{"key":"Home Development Mutual Fund","value":"Home Development Mutual Fund"},{"key":"Withholding Tax on Wages","value":"Withholding Tax on Wages"},{"key":"Other Statutory Deduction","value":"Other Statutory Deduction"}]';
-    add_option('deduction_type', $value);
-
-    if (!$CI->db->field_exists('is_notification', db_prefix() . 'staff_insurance')) {
-        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `is_notification` int(11) DEFAULT 0;");
-    }
-    if (!$CI->db->field_exists('recurring_from', db_prefix() . 'staff_insurance')) {
-        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `recurring_from` int(11) DEFAULT 0;");
-    }
-    if (!$CI->db->field_exists('deadline_notified', db_prefix() . 'staff_insurance')) {
-        $CI->db->query("ALTER TABLE `" . db_prefix() . "staff_insurance` ADD `deadline_notified` int(11) DEFAULT 0;");
-    }
-    add_option('hr_profile_hide_menu', 1, 1);
+    add_option('deduction_type',$value);
 }
+
+if (!option_exists('relation_type')) {
+    $value = '[{"key":"Self","value":"Self"},{"key":"Parent","value":"Parent"},{"key":"Spouse","value":"Spouse"},{"key":"Child","value":"Child"},{"key":"Sibling","value":"Sibling"},{"key":"In Laws","value":"In Laws"}]';
+    add_option('relation_type',$value);
+}
+
+if (!option_exists('education_level_type')) {
+    $value = '[{"key":"High School Diploma \/ GED","value":"High School Diploma \/ GED"}]';
+    add_option('education_level_type',$value);
+}
+if (!option_exists('skill_type')) {
+    $value = '[{"key":"jQuery","value":"jQuery"}]';
+    add_option('skill_type',$value);
+}
+
+if (!option_exists('education_type')) {
+    $value = '[{"key":"English","value":"English"}]';
+    add_option('education_type',$value);
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_awards')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_awards` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `award_type` varchar(200) NOT NULL,
+    `date` date NOT NULL,
+    `gift` varchar(200) NOT NULL,
+    `cash` bigint NOT NULL,
+    `description` text NOT NULL,
+    `award_information` text NOT NULL,
+    `award_photo` varchar(200) NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_terminations')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_terminations` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `termination_type` varchar(200) NOT NULL,
+    `termination_date` date NOT NULL,
+    `notice_date` date NOT NULL,
+    `description` text NOT NULL,
+    `attachment` varchar(200) NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->field_exists('status', db_prefix() . 'hr_terminations')) {
+    $CI->db->query("ALTER TABLE `".db_prefix() ."hr_terminations` ADD `status` varchar(200) DEFAULT 0;");
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_warnings')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_warnings` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `warning_type` varchar(200) NOT NULL,
+    `warning_date` date NOT NULL,
+    `subject` varchar(200) NOT NULL,
+    `description` text NOT NULL,
+    `attachment` varchar(200) NOT NULL,
+    `warning_by` int(11) NOT NULL,
+    `warning_to` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_complaints')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_complaints` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `complaint_date` date NOT NULL,
+    `description` text NOT NULL,
+    `attachment` varchar(200) NOT NULL,
+    `complaint_title` varchar(200) NOT NULL,
+    `complaint_from` int(11) NOT NULL,
+    `complaint_againts` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_resignations')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_resignations` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `notice_date` date NOT NULL,
+    `resignation_date` date NOT NULL,
+    `resignation_reason` text NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->field_exists('status', db_prefix() . 'hr_resignations')) {
+    $CI->db->query("ALTER TABLE `".db_prefix() ."hr_resignations` ADD `status` varchar(200) DEFAULT 0;");
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_designations')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_designations` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `department_id` varchar(200) NOT NULL,
+    `designation_name` varchar(200) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_promotions')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_promotions` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `promotion_date` date NOT NULL,
+    `promotion_title` varchar(200) NOT NULL,
+    `description` text NOT NULL,
+    `designation` int(11) NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+if (!$CI->db->table_exists(db_prefix() . 'hr_travels')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_travels` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `start_date` date NOT NULL,
+    `end_date` date NOT NULL,
+    `expected_budget` varchar(200) NOT NULL,
+    `actual_budget` varchar(200) NOT NULL,
+    `purpose` varchar(200) NOT NULL,
+    `place` varchar(200) NOT NULL,
+    `description` text NOT NULL,
+    `travel_mode_type` varchar(200) NOT NULL,
+    `arrangement_type` varchar(200) NOT NULL,
+    `status` varchar(200) NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+
+
+
+add_option('hr_profile_hide_menu', 1, 1);
