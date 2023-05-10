@@ -31,7 +31,8 @@ class Core_hr extends AdminController{
 
     public function awards(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_awards_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_awards_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -139,7 +140,8 @@ class Core_hr extends AdminController{
 
     public function complaints(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_complaints_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_complaints_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -250,7 +252,8 @@ class Core_hr extends AdminController{
 
     public function travels(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_travel_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_travel_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -360,7 +363,8 @@ class Core_hr extends AdminController{
         $data['departments'] = $this->Departments_model->get();
         $data['designations'] = $this->Designation_model->get();
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_promotions_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_promotions_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -479,7 +483,8 @@ class Core_hr extends AdminController{
 
     public function resignations(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_resignations_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_resignations_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -589,7 +594,8 @@ class Core_hr extends AdminController{
         $this->load->model('Sub_department_model');
 
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_transfers_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_transfers_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -714,7 +720,8 @@ class Core_hr extends AdminController{
 
     public function warnings(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_warnings_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_warnings_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();
@@ -828,7 +835,8 @@ class Core_hr extends AdminController{
 
     public function terminations(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_terminations_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_terminations_table'));
+
         }
 //            if($this->app_modules->is_active('branches')) {
 //            $ci = &get_instance();

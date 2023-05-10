@@ -89,6 +89,72 @@ function hr_profile_module_init_menu_items()
             'position' => 5,
         ]);
     }
+    if (has_permission('expired_documents', '', 'view_own') || has_permission('expired_documents', '', 'view')){
+        $CI->app_menu->add_sidebar_children_item('organizations', [
+            'slug'     => 'expired_documents',
+            'name'     => _l('expired_documents'),
+            'href'     => admin_url('hr_profile/organization/expired_documents'),
+            'position' => 44,
+            'icon'     => 'fa fa-users',
+        ]);
+    }
+    $CI->app_menu->add_sidebar_menu_item('hr', [
+        'name'     => _l('hr'),
+        'icon'     => 'fa fa-users',
+        'position' => 200,
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'awards',
+        'name'     => _l('awards'),
+        'href'     => admin_url('hr_profile/core_hr/awards'),
+        'position' => 75,
+        'icon'     => 'fa fa-trophy',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'terminations',
+        'name'     => _l('terminations'),
+        'href'     => admin_url('hr_profile/core_hr/terminations'),
+        'position' => 80,
+        'icon'     => 'fa fa-sign-out',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'warnings',
+        'name'     => _l('warnings'),
+        'href'     => admin_url('hr_profile/core_hr/warnings'),
+        'position' => 85,
+        'icon'     => 'fa fa-exclamation-triangle',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'complaints',
+        'name'     => _l('complaints'),
+        'href'     => admin_url('hr_profile/core_hr/complaints'),
+        'position' => 95,
+        'icon'     => 'fa fa-file',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'resignations',
+        'name'     => _l('resignations'),
+        'href'     => admin_url('hr_profile/core_hr/resignations'),
+        'position' => 100,
+        'icon'     => 'fa fa-file',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'promotions',
+        'name'     => _l('promotions'),
+        'href'     => admin_url('hr_profile/core_hr/promotions'),
+        'position' => 105,
+        'icon'     => 'fa fa-bullhorn',
+    ]);
+    $CI->app_menu->add_sidebar_children_item('hr', [
+        'slug'     => 'travels',
+        'name'     => _l('travels'),
+        'href'     => admin_url('hr_profile/core_hr/travels'),
+        'position' => 110,
+        'icon'     => 'fa fa-file',
+    ]);
+
+
+
 
     if(has_permission('hrm_dashboard','','view')){
         $CI->app_menu->add_sidebar_children_item('hr_profile', [
@@ -220,6 +286,7 @@ function hr_profile_module_init_menu_items()
         'icon'     => 'fa fa-building-o',
     ]);
 }
+
 /**
  * hr profile load js
  */
