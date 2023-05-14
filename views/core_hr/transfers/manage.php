@@ -52,7 +52,7 @@ $('.modal').on('hidden.bs.modal', function (e) {
         .remove()
 })
 $(document).on('change','#staff_id',function () {
-        $.get(admin_url + 'hr/core_hr/in_hr_system/' + $(this).val(), function(response) {
+        $.get(admin_url + 'hr_profile/core_hr/in_hr_system/' + $(this).val(), function(response) {
             if (response.success == true) {
                 $('#add_transfer').modal('show'); // show bootstrap modal when complete loaded
 
@@ -89,7 +89,7 @@ $(document).on('change','#branch_id',function () {
         }
     }, 'json');
 
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#e_staff_id').empty();
             $('#e_staff_id').append($('<option>', {
@@ -134,7 +134,7 @@ $(document).on('change','#a_branch_id',function () {
         }
     }, 'json');
 
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#staff_id').empty();
             $('#staff_id').append($('<option>', {
@@ -157,7 +157,7 @@ $(document).on('change','#a_branch_id',function () {
 });
 
 $(document).on('change','#department_id',function () {
-    $.get(admin_url + 'hr/organization/get_sub_departments/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_sub_departments/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#sub_department_id').empty();
             $('#sub_department_id').append($('<option>', {
@@ -180,7 +180,7 @@ $(document).on('change','#department_id',function () {
 });
 
 $(document).on('change','#a_department_id',function () {
-    $.get(admin_url + 'hr/organization/get_sub_departments/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_sub_departments/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#a_sub_department_id').empty();
             $('#a_sub_department_id').append($('<option>', {

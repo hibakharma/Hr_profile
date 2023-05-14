@@ -38,7 +38,7 @@
         initDataTable('.table-warning', window.location.href);
    });
 $(document).on('change','#branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#e_warning_to').empty();
             $('#e_warning_to').append($('<option>', {
@@ -76,7 +76,7 @@ $('.modal').on('hidden.bs.modal', function (e) {
 })
 
 $(document).on('change','#a_branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#warning_to').empty();
             $('#warning_to').append($('<option>', {
@@ -99,7 +99,7 @@ $(document).on('change','#a_branch_id',function () {
 });
 
 $(document).on('change','#branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#e_warning_by').empty();
             $('#e_warning_by').append($('<option>', {
@@ -122,7 +122,7 @@ $(document).on('change','#branch_id',function () {
 });
 
 $(document).on('change','#a_branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#warning_by').empty();
             $('#warning_by').append($('<option>', {

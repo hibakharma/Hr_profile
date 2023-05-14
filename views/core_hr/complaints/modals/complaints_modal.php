@@ -8,7 +8,7 @@
                     <span class="edit-title"><?php echo _l("edit"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/update_complaint'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/update_complaint'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -88,7 +88,7 @@
                     <span class="add-title"><?php echo _l("add"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/add_complaint'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/add_complaint'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -175,7 +175,7 @@ function required_file() {
         $('.help-block').empty(); // clear error string
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr/core_hr/complaint_json') ?>/" + id,
+            url : "<?php echo site_url('hr_profile/core_hr/complaint_json') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)

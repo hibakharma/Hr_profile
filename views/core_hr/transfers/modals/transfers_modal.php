@@ -8,7 +8,7 @@
                     <span class="edit-title"><?php echo _l("edit"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/update_transfer'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/update_transfer'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -95,7 +95,7 @@
                     <span class="add-title"><?php echo _l("add"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/add_transfer'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/add_transfer'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('status', 'Pending'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -181,7 +181,7 @@ function required_file() {
 
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr/core_hr/json_transfer') ?>/" + id,
+            url : "<?php echo site_url('hr_profile/core_hr/json_transfer') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)
@@ -198,7 +198,7 @@ function required_file() {
                 $('[name="to_sub_department"]').val(data.to_sub_department);
 
 
-                $.get(admin_url + 'hr/organization/get_sub_departments/' + data.department.departmentid, function(response) {
+                $.get(admin_url + 'hr_profile/organization/get_sub_departments/' + data.department.departmentid, function(response) {
                     if (response.success == true) {
                         $('#sub_department_id').empty();
                         $('#sub_department_id').append($('<option>', {

@@ -8,7 +8,7 @@
                     <span class="edit-title"><?php echo _l("edit"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/update_promotion'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/update_promotion'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -77,7 +77,7 @@
                     <span class="add-title"><?php echo _l("add"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/add_promotion'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/add_promotion'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -148,7 +148,7 @@
 
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr/core_hr/promotion_json') ?>/" + id,
+            url : "<?php echo admin_url('hr_profile/core_hr/promotion_json') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)
@@ -164,7 +164,7 @@
 
                 // $('[name="branch_id"]').val(data.branch_id);
 
-                $.get(admin_url + 'hr/organization/get_designations_by_staff_id/' + data.staff_id, function(response) {
+                $.get(admin_url + 'hr_profile/organization/get_designations_by_staff_id/' + data.staff_id, function(response) {
                     if (response.success == true) {
                         $('#e_designation_id').empty();
                         $('#e_designation_id').append($('<option>', {

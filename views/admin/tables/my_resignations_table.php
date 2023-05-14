@@ -44,7 +44,7 @@ foreach ($rResult as $aRow) {
 
     $row[] = $aRow['status'];
     $options = ''; if (has_permission('resignations', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_resignation', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
-    if (has_permission('resignations', '', 'delete')) $options .= icon_btn('hr/core_hr/delete_resignation/' . $aRow['id'], 'remove', 'btn-danger _delete');
+    if (has_permission('resignations', '', 'delete')) $options .= icon_btn('hr_profile/core_hr/delete_resignation/' . $aRow['id'], 'remove', 'btn-danger _delete');
     if (has_permission('resignations', '', 'edit') || has_permission('resignations', '', 'delete') )
         $row[]   = $options;
 

@@ -9,6 +9,13 @@ class Core_hr extends AdminController{
         $this->load->library('hrmapp');
         $this->load->model('Terminations_model');
         $this->load->model('Designation_model');
+        $this->load->model('Resignations_model');
+        $this->load->model('Complaint_model');
+        $this->load->model('Travel_model');
+        $this->load->model('Promotion_model');
+        $this->load->model('Transfers_model');
+        $this->load->model('Warnings_model');
+
 
 
 

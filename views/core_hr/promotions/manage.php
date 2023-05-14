@@ -54,7 +54,7 @@ $('.modal').on('hidden.bs.modal', function (e) {
 })
 
 $(document).on('change','#branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#e_staff_id').empty();
             $('#e_staff_id').append($('<option>', {
@@ -77,7 +77,7 @@ $(document).on('change','#branch_id',function () {
 });
 
 $(document).on('change','#a_branch_id',function () {
-    $.get(admin_url + 'hr/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_staffs_by_branch_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#staff_id').empty();
             $('#staff_id').append($('<option>', {
@@ -100,7 +100,7 @@ $(document).on('change','#a_branch_id',function () {
 });
 
 $(document).on('change','#staff_id',function () {
-    $.get(admin_url + 'hr/organization/get_designations_by_staff_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_designations_by_staff_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#designation_id').empty();
             $('#designation_id').append($('<option>', {
@@ -123,7 +123,7 @@ $(document).on('change','#staff_id',function () {
 });
 
 $(document).on('change','#e_staff_id',function () {
-    $.get(admin_url + 'hr/organization/get_designations_by_staff_id/' + $(this).val(), function(response) {
+    $.get(admin_url + 'hr_profile/organization/get_designations_by_staff_id/' + $(this).val(), function(response) {
         if (response.success == true) {
             $('#e_designation_id').empty();
             $('#e_designation_id').append($('<option>', {

@@ -8,7 +8,7 @@
                     <span class="edit-title"><?php echo _l("edit"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/update_travel'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/update_travel'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <div class="modal-body">
                 <div class="row">
@@ -140,7 +140,7 @@
                     <span class="add-title"><?php echo _l("add"); ?></span>
                 </h4>
             </div>
-            <?php echo form_open_multipart(admin_url('hr/core_hr/add_travel'),array('id'=>'form_transout')); ?>
+            <?php echo form_open_multipart(admin_url('hr_profile/core_hr/add_travel'),array('id'=>'form_transout')); ?>
             <?php echo form_hidden('id'); ?>
             <?php echo form_hidden('status', 'Pending'); ?>
             <div class="modal-body">
@@ -272,7 +272,7 @@ function required_file() {
 
         //Ajax Load data from ajax
         $.ajax({
-            url : "<?php echo site_url('hr/core_hr/json_travel') ?>/" + id,
+            url : "<?php echo admin_url('hr_profile/core_hr/json_travel') ?>/" + id,
             type: "POST",
             dataType: "JSON",
             success: function(data)

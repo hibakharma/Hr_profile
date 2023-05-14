@@ -45,7 +45,7 @@ foreach ($rResult as $aRow) {
     $row[] = $aRow['status'];
     $options = ''; if (has_permission('hr', '', 'edit')) $options = icon_btn('#', 'pencil-square-o', 'btn-default', ['data-toggle' => 'modal', 'data-target' => '#update_termination', 'data-id' => $aRow['id'], 'onclick' => 'edit(' . $aRow['id'] . ')']);
     $options .= icon_btn(base_url().$aRow['attachment'], 'download', 'btn-default','download');
-    if (has_permission('hr', '', 'delete'))$options .= icon_btn('hr/core_hr/delete_termination/' . $aRow['id'], 'remove', 'btn-danger _delete');
+    if (has_permission('hr', '', 'delete'))$options .= icon_btn('hr_profile/core_hr/delete_termination/' . $aRow['id'], 'remove', 'btn-danger _delete');
     $row[]   = $options;
 
     $output['aaData'][] = $row;
