@@ -1229,7 +1229,7 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_promotions')) {
     `staff_id` int(11) NOT NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
 }
-if (!$CI->db->table_exists(db_prefix() . 'hr_travels')) {
+if (!$CI->db->table_exists(db_prefix() . 'hr_overtime')) {
     $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_travels` (
     `id` int(11) PRIMARY KEY AUTO_INCREMENT,
     `start_date` date NOT NULL,
@@ -1248,4 +1248,90 @@ if (!$CI->db->table_exists(db_prefix() . 'hr_travels')) {
 
 
 
+if (!$CI->db->table_exists(db_prefix() . 'hr_indicators')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_indicators` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `designation_id` int(11) NOT NULL,
+    `customer_experience` varchar(200) NOT NULL,
+    `marketing` varchar(200) NOT NULL,
+    `administration` varchar(200) NOT NULL,
+    `professionalism` varchar(200) NOT NULL,
+    `integrity` varchar(200) NOT NULL,
+    `attendance` varchar(200) NOT NULL,
+    `added_by` int(11) NOT NULL,
+    `created` timestamp NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+
+if (!$CI->db->table_exists(db_prefix() . 'hr_extra_info')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_extra_info` (
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `emloyee_id` varchar(255) NOT NULL, 
+  `sub_department` varchar(255) NOT NULL, 
+  `designation` varchar(255) NOT NULL, 
+  `gender` varchar(255) NOT NULL, 
+  `marital_status` varchar(255) NOT NULL, 
+  `office_sheft` varchar(255) NOT NULL, 
+  `date_birth` date NOT NULL, 
+  `state_province` varchar(255) NOT NULL, 
+  `city` varchar(255) NOT NULL, 
+  `zip_code` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL, 
+  `staff_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+
+
+if (!$CI->db->table_exists(db_prefix() . 'hr_appraisal')) {
+    $CI->db->query('CREATE TABLE `' . db_prefix() . 'hr_appraisal` (
+    `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `customer_experience` varchar(200) NOT NULL,
+    `marketing` varchar(200) NOT NULL,
+    `administration` varchar(200) NOT NULL,
+    `professionalism` varchar(200) NOT NULL,
+    `integrity` varchar(200) NOT NULL,
+    `attendance` varchar(200) NOT NULL,
+    `month` varchar(200) NOT NULL,
+    `remarks` text NOT NULL,
+    `staff_id` int(11) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=' . $CI->db->char_set . ';');
+}
+
+if (!$CI->db->field_exists('second_name' ,db_prefix() . 'staff')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
+          ADD COLUMN `second_name` varchar(100) NULL AFTER `firstname`');
+}
+if (!$CI->db->field_exists('third_name' ,db_prefix() . 'staff')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
+          ADD COLUMN `third_name` varchar(100) NULL AFTER `second_name`');
+}
+
+
+if (!option_exists('deduction_type')) {
+    $value = '[{"key":"Social Security System","value":"Social Security System"},{"key":"Health Insurance Corporation","value":"Health Insurance Corporation"},{"key":"Home Development Mutual Fund","value":"Home Development Mutual Fund"},{"key":"Withholding Tax on Wages","value":"Withholding Tax on Wages"},{"key":"Other Statutory Deduction","value":"Other Statutory Deduction"}]';
+    add_option('deduction_type',$value);
+}
+
+if (!option_exists('relation_type')) {
+    $value = '[{"key":"Self","value":"Self"},{"key":"Parent","value":"Parent"},{"key":"Spouse","value":"Spouse"},{"key":"Child","value":"Child"},{"key":"Sibling","value":"Sibling"},{"key":"In Laws","value":"In Laws"}]';
+    add_option('relation_type',$value);
+}
+
+if (!option_exists('education_level_type')) {
+    $value = '[{"key":"High School Diploma \/ GED","value":"High School Diploma \/ GED"}]';
+    add_option('education_level_type',$value);
+}
+if (!option_exists('skill_type')) {
+    $value = '[{"key":"jQuery","value":"jQuery"}]';
+    add_option('skill_type',$value);
+}
+
+if (!option_exists('education_type')) {
+    $value = '[{"key":"English","value":"English"}]';
+    add_option('education_type',$value);
+}
+
+
+
 add_option('hr_profile_hide_menu', 1, 1);
+

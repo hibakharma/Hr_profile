@@ -57,6 +57,48 @@ function hr_profile_module_activation_hook()
     $CI = &get_instance();
     require_once(__DIR__ . '/install.php');
 }
+/**immigration */
+function add_immigration_reminder_tab(){
+    echo '
+	<li role="presentation">
+	<a href="#immigration" aria-control="immigration" role="tab" data-toggle="tab">'._l('immigration').'</a>
+	</li>';
+}
+
+function add_immigration_reminder_tab_content(){
+    echo '<div role="tabpanel" class="tab-pane" id="immigration">
+ <i class="fa fa-question-circle pull-left" data-toggle="tooltip" data-title="'. _l('hr_immigration_reminder_notification_before_help').'"></i>
+ '.render_input('settings[hr_immigration_reminder_notification_before]','hr_immigration_reminder_notification_before',get_option('hr_immigration_reminder_notification_before'),'number').'
+</div>  ';
+}
+
+function add_staff_hr_reminder_tab(){
+    echo '
+	<li role="presentation">
+	<a href="#hr_document" aria-control="hr_document" role="tab" data-toggle="tab">'._l('hr_document').'</a>
+	</li>';
+}
+
+function add_staff_hr_reminder_tab_content(){
+    echo '<div role="tabpanel" class="tab-pane" id="hr_document">
+ <i class="fa fa-question-circle pull-left" data-toggle="tooltip" data-title="'. _l('hr_document_reminder_notification_before_help').'"></i>
+ '.render_input('settings[hr_document_reminder_notification_before]','hr_document_reminder_notification_before',get_option('hr_document_reminder_notification_before'),'number').'
+</div>  ';
+}
+function add_official_document_reminder_tab(){
+    echo '
+	<li role="presentation">
+	<a href="#official_document" aria-control="official_document" role="tab" data-toggle="tab">'._l('official_documents').'</a>
+	</li>';
+}
+
+function add_official_document_reminder_tab_content(){
+    echo '<div role="tabpanel" class="tab-pane" id="official_document">
+ <i class="fa fa-question-circle pull-left" data-toggle="tooltip" data-title="'. _l('hr_official_document_reminder_notification_before').'"></i>
+ '.render_input('settings[hr_official_document_reminder_notification_before]','hr_official_document_reminder_notification_before',get_option('hr_official_document_reminder_notification_before'),'number').'
+</div>  ';
+}
+
 
 
 /**
@@ -87,6 +129,42 @@ function hr_profile_module_init_menu_items()
             'name'     => _l('hr_hr_profile'),
             'icon'     => 'fa fa-users',
             'position' => 5,
+        ]);
+    }
+    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')
+    ) {
+        $CI->app_menu->add_sidebar_menu_item('organizations', [
+            'name' => _l('organizations'),
+            'icon' => 'fa fa-users',
+            'position' => 210,
+        ]);
+    }
+
+    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view') ){
+        $CI->app_menu->add_sidebar_children_item('organizations', [
+            'slug'     => 'official_documents',
+            'name'     => _l('official_documents'),
+            'href'     => admin_url('hr_profile/organization/officail_documents'),
+            'position' => 45,
+            'icon'     => 'fa fa-file',
+        ]);
+    }
+    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
+        $CI->app_menu->add_sidebar_children_item('organizations', [
+            'slug'     => 'indicators',
+            'name'     => _l('indicators'),
+            'href'     => admin_url('hr_profile/performance/indicators'),
+            'position' => 45,
+            'icon'     => 'fa fa-tachometer',
+        ]);
+    }
+    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
+        $CI->app_menu->add_sidebar_children_item('organizations', [
+            'slug'     => 'appraisals',
+            'name'     => _l('appraisals'),
+            'href'     => admin_url('hr_profile/performance/appraisals'),
+            'position' => 50,
+            'icon'     => 'fa fa-tachometer',
         ]);
     }
     if (has_permission('expired_documents', '', 'view_own') || has_permission('expired_documents', '', 'view')){
@@ -664,7 +742,7 @@ function hr_profile_predeactivate($module_name){
 
 function immigration_reminders()
 {
-    $CI = & get_instance();
+    $CI = &get_instance();
     $reminder_before = get_option('hr_immigration_reminder_notification_before');
 
     // INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES (NULL, 'hr_document_reminder_notification_before', '3', '1');
@@ -675,20 +753,20 @@ function immigration_reminders()
 
     $documents = $CI->db->get(db_prefix() . 'hr_immigration')->result_array();
 
-    $now   = new DateTime(date('Y-m-d'));
+    $now = new DateTime(date('Y-m-d'));
 
     $notifiedUsers = [];
     foreach ($documents as $document) {
         if (date('Y-m-d', strtotime($document['date_expiry'])) >= date('Y-m-d')) {
             $end_date = new DateTime($document['date_expiry']);
-            $diff    = $end_date->diff($now)->format('%a');
+            $diff = $end_date->diff($now)->format('%a');
             // Check if difference between start date and date_expiry is the same like the reminder before
             // In this case reminder wont be sent becuase the document it too short
-            $end_date                 = strtotime($document['date_expiry']);
+            $end_date = strtotime($document['date_expiry']);
             $start_and_end_date_diff = $end_date;
             $start_and_end_date_diff = floor($end_date / (60 * 60 * 24));
 
-            if (date('Y-m-d', strtotime($document['eligible_review_date'])) == date('Y-m-d')){
+            if (date('Y-m-d', strtotime($document['eligible_review_date'])) == date('Y-m-d')) {
                 $CI->db->where('admin', 1);
                 $assignees = $CI->staff_model->get();
 
@@ -696,11 +774,11 @@ function immigration_reminders()
                     $row = $CI->db->get(db_prefix() . 'staff')->row();
                     if ($row) {
                         $notified = add_notification([
-                            'description'     => 'not_document_deadline_reminder',
-                            'touserid'        => $member['staffid'],
-                            'fromcompany'     => 1,
-                            'fromuserid'      => null,
-                            'link'            => 'hr_profile/general/' . $document['staff_id'] . '?group=immigration',
+                            'description' => 'not_document_deadline_reminder',
+                            'touserid' => $member['staffid'],
+                            'fromcompany' => 1,
+                            'fromuserid' => null,
+                            'link' => 'hr_profile/general/' . $document['staff_id'] . '?group=immigration',
 
                         ]);
 
@@ -720,8 +798,131 @@ function immigration_reminders()
             }
         }
     }
+    function official_document_reminders()
+    {
+        $CI = &get_instance();
+        $reminder_before = get_option('hr_official_document_reminder_notification_before');
 
-    pusher_trigger_notification($notifiedUsers);
+        // INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES (NULL, 'hr_document_reminder_notification_before', '3', '1');
 
+        $CI->db->where('date_expiry IS NOT NULL');
+        $CI->db->where('deadline_notified', 0);
+        $CI->db->where('is_notification', 1);
+
+        $documents = $CI->db->get(db_prefix() . 'hr_official_documents')->result_array();
+
+        $now = new DateTime(date('Y-m-d'));
+
+        $notifiedUsers = [];
+        foreach ($documents as $document) {
+            if (date('Y-m-d', strtotime($document['date_expiry'])) >= date('Y-m-d')) {
+                $end_date = new DateTime($document['date_expiry']);
+                $diff = $end_date->diff($now)->format('%a');
+                // Check if difference between start date and date_expiry is the same like the reminder before
+                // In this case reminder wont be sent becuase the document it too short
+                $end_date = strtotime($document['date_expiry']);
+                $start_and_end_date_diff = $end_date;
+                $start_and_end_date_diff = floor($end_date / (60 * 60 * 24));
+
+                if ($diff <= $reminder_before) {
+                    $CI->db->where('admin', 1);
+                    $assignees = $CI->staff_model->get();
+
+                    foreach ($assignees as $member) {
+                        $row = $CI->db->get(db_prefix() . 'staff')->row();
+                        if ($row) {
+                            $notified = add_notification([
+                                'description' => ' official_document_reminders',
+                                'touserid' => $member['staffid'],
+                                'fromcompany' => 1,
+                                'fromuserid' => null,
+                                'link' => 'hr_profile/organization/officail_documents',
+
+                            ]);
+
+                            if ($notified) {
+                                array_push($notifiedUsers, $member['staffid']);
+                            }
+
+                            // send_mail_template('document_deadline_reminder_to_staff', $row->email, $member['staffid'], $document['id']);
+
+
+                            $CI->db->where('id', $document['id']);
+                            $CI->db->update(db_prefix() . 'hr_official_documents', [
+                                'deadline_notified' => 1,
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        pusher_trigger_notification($notifiedUsers);
+
+
+    }
+
+    function document_reminders()
+    {
+        $CI = &get_instance();
+        $reminder_before = get_option('hr_document_reminder_notification_before');
+
+        // INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES (NULL, 'hr_document_reminder_notification_before', '3', '1');
+
+        $CI->db->where('date_expiry IS NOT NULL');
+        $CI->db->where('deadline_notified', 0);
+        $CI->db->where('is_notification', 1);
+
+        $documents = $CI->db->get(db_prefix() . 'hr_documents')->result_array();
+
+        $now = new DateTime(date('Y-m-d'));
+
+        $notifiedUsers = [];
+        foreach ($documents as $document) {
+            if (date('Y-m-d', strtotime($document['date_expiry'])) >= date('Y-m-d')) {
+                $end_date = new DateTime($document['date_expiry']);
+                $diff = $end_date->diff($now)->format('%a');
+                // Check if difference between start date and date_expiry is the same like the reminder before
+                // In this case reminder wont be sent becuase the document it too short
+                $end_date = strtotime($document['date_expiry']);
+                $start_and_end_date_diff = $end_date;
+                $start_and_end_date_diff = floor($end_date / (60 * 60 * 24));
+
+                if ($diff <= $reminder_before) {
+                    $CI->db->where('admin', 1);
+                    $assignees = $CI->staff_model->get();
+
+                    foreach ($assignees as $member) {
+                        $row = $CI->db->get(db_prefix() . 'staff')->row();
+                        if ($row) {
+                            $notified = add_notification([
+                                'description' => 'document_reminders',
+                                'touserid' => $member['staffid'],
+                                'fromcompany' => 1,
+                                'fromuserid' => null,
+                                'link' => 'hr_profile/member/' . $document['staff_id'] . '?group=document',
+
+                            ]);
+
+                            if ($notified) {
+                                array_push($notifiedUsers, $member['staffid']);
+                            }
+
+                            //send_mail_template('document_deadline_reminder_to_staff', $row->email, $member['staffid'], $document['id']);
+
+
+                            $CI->db->where('id', $document['id']);
+                            $CI->db->update(db_prefix() . 'hr_documents', [
+                                'deadline_notified' => 1,
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        pusher_trigger_notification($notifiedUsers);
+
+    }
 }
 

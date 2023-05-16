@@ -236,8 +236,27 @@ class Hr_profile extends AdminController {
 		$data['title'] = _l('hr_reception_staff');
 		$this->load->view('reception_staff/reception_staff', $data);
 	}
+    public function staff()
+    {
+//        if (!has_permission('staff', '', 'view')) {
+//            access_denied('staff');
+//        }
+        if ($this->input->is_ajax_request()) {
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/staff'));
 
-	/**
+        }
+        $data['staff_members'] = $this->staff_model->get('', ['active' => 1]);
+        $data['title']         = _l('staff_members');
+        //$data['departments']   = $this->Departments_model->get();
+        $this->load->view('staff/manage', $data);
+    }
+
+    public function staff_table(){
+        $this->load->library("hr_profile/HrmApp");
+        $this->hrmapp->get_table_data('staff');
+    }
+
+    /**
 	 * table reception staff
 	 */
 	public function table_reception_staff() {
@@ -357,10 +376,10 @@ class Hr_profile extends AdminController {
         if ($this->input->is_ajax_request()) {
             if ($data['group'] == 'insurance_book_number') {
 
-                $this->app->get_table_data(module_views_path('hr_profile', 'my_insurance_book_number_table'));
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_insurance_book_number_table'));
 
             } elseif ($data['group'] == 'insurance_type') {
-                $this->app->get_table_data(module_views_path('hr_profile', 'my_insurance_type_table'));
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_insurance_type_table'));
 
             }
 
@@ -3357,31 +3376,31 @@ class Hr_profile extends AdminController {
                 if($group == 'immigration'){
                     $this->load->library("hr_profile/HrmApp");
                    // $this->hrmapp->get_table_data('my_immigrations_table', ['staff_id' => $id]);
-                    $this->app->get_table_data(module_views_path('hr_profile', 'my_immigrations_table'), ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_immigrations_table'), ['staff_id' => $id]);
 
                 }
                 elseif($group == 'bank_account'){
                     $this->load->library("hr_profile/HrmApp");
                     //$this->hrmapp->get_table_data('my_bank_account_table', ['staff_id' => $id]);
-                  $this->app->get_table_data(module_views_path('hr_profile', 'my_bank_account_table'), ['staff_id' => $id]);
+                  $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_bank_account_table'), ['staff_id' => $id]);
 
                 }
                 if($group == 'work_experience'){
                     $this->load->library("hr_profile/HrmApp");
                    // $this->hrmapp->get_table_data('my_work_experience_table', ['staff_id' => $id]);
-                    $this->app->get_table_data(module_views_path('hr_profile', 'my_work_experience_table'), ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_work_experience_table'), ['staff_id' => $id]);
                 }
 
                 elseif($group == 'emergency_contacts'){
                     $this->load->library("hr_profile/HrmApp");
                  //  $this->hrmapp->get_table_data('my_emergency_contacts_table', ['staff_id' => $id]);
-                    $this->app->get_table_data(module_views_path('hr_profile', 'my_emergency_contacts_table'), ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_emergency_contacts_table'), ['staff_id' => $id]);
                 }
 
                 if($group == 'qualification'){
                     $this->load->library("hr_profile/HrmApp");
                    // $this->hrmapp->get_table_data('my_qualifications_table', ['staff_id' => $id]);
-                    $this->app->get_table_data(module_views_path('hr_profile', 'my_qualifications_table'), ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_qualifications_table'), ['staff_id' => $id]);
 
                 }
 
@@ -3389,7 +3408,7 @@ class Hr_profile extends AdminController {
                 if($group == 'document'){
                     $this->load->library("hr_profile/HrmApp");
                   //  $this->hrmapp->get_table_data('my_document_table', ['staff_id' => $id]);
-                    $this->app->get_table_data(module_views_path('hr_profile', 'my_document_table'), ['staff_id' => $id]);
+                    $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_document_table'), ['staff_id' => $id]);
 
                 }}
 			if ($data['group'] == 'attach') {
@@ -9102,7 +9121,7 @@ class Hr_profile extends AdminController {
     public function table_insurance()
     {
 
-        $this->app->get_table_data(module_views_path('hr_profile', 'table_insurance'));
+        $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/table_insurance'));
 
     }
 
