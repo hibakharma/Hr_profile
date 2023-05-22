@@ -176,5 +176,18 @@
             }
         }, 'json');
     }
+    $('input[name="administrator"]').on('change', function() {
+        var checked = $(this).prop('checked');
+        var isNotStaffMember = $('.is-not-staff');
+        if (checked == true) {
+            isNotStaffMember.addClass('hide');
+            $('.roles').find('input').prop('disabled', true).prop('checked', false);
+        } else {
+            isNotStaffMember.removeClass('hide');
+            isNotStaffMember.find('input').prop('checked', false);
+            $('.roles').find('.capability').not('[data-not-applicable="true"]').prop('disabled', false)
+        }
+    });
+
 
 </script>

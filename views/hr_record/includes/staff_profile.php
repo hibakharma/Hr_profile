@@ -41,8 +41,8 @@ if ($member->active == 0) {?>
 										<a href="linkedin: <?php echo html_escape($member->linkedin); ?>" class="btn btn-circle">
 											<i class="fa fa-linkedin"></i>
 										</a>
-										<a href="skype: <?php echo html_escape($member->skype); ?>" class="btn btn-circle">
-											<i class="fa fa-skype"></i>
+										<a href="twitter: <?php echo html_escape($member->twitter); ?>" class="btn btn-circle">
+											<i class="fa fa-twitter"></i>
 										</a>
 										<a href="mailto: <?php echo html_escape($member->email); ?>" class="btn btn-circle">
 											<i class="fa fa-envelope"></i>
@@ -180,10 +180,7 @@ if ($member->job_position > 0) {
 							<td class="bold"><?php echo _l('hr_hr_religion'); ?></td>
 							<td><?php echo html_entity_decode($member->religion); ?></td>
 						</tr>
-						<tr class="project-overview">
-							<td class="bold"><?php echo _l('hr_hr_nation'); ?></td>
-							<td><?php echo html_entity_decode($member->nation); ?></td>
-						</tr>
+
 
 						<tr class="project-overview">
 							<td class="bold"><?php echo _l('hr_hr_marital_status'); ?></td>
@@ -238,10 +235,7 @@ if ($member->job_position > 0) {
 							<td class="bold"><?php echo _l('hr_bank_name'); ?></td>
 							<td><?php echo html_entity_decode($member->issue_bank); ?></td>
 						</tr>
-						<tr class="project-overview">
-							<td class="bold"><?php echo _l('hr_Personal_tax_code'); ?></td>
-							<td><?php echo html_entity_decode($member->Personal_tax_code); ?></td>
-						</tr>
+
 					</tbody>
 				</table>
 			</div>

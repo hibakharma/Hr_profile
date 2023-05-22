@@ -37,7 +37,8 @@ class Organization extends AdminController{
 
     public function officail_documents(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_official_documents_table');
+          $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_official_documents_table'));
+
         }
         $data['title'] = _l('official_documents');
         $this->load->view('organization/officail_documents', $data);
@@ -96,7 +97,8 @@ class Organization extends AdminController{
 
     public function designation(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_designation_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_designation_table'));
+
         }
         $data['departments']   = $this->Departments_model->get();
         $data['designations_groups'] = $this->Designation_model->get_designation_group();
@@ -106,7 +108,8 @@ class Organization extends AdminController{
 
     public function designations_groups(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_designations_groups_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_designations_groups_table'));
+
         }
         $data['title'] = _l('designations_groups');
         $this->load->view('organization/designations_groups', $data);
@@ -115,7 +118,8 @@ class Organization extends AdminController{
 
     public function sub_department(){
         if($this->input->is_ajax_request()){
-            $this->hrmapp->get_table_data('my_sub_department_table');
+            $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_sub_department_table'));
+
         }
         $data['departments']   = $this->Departments_model->get();
         $data['title'] = _l('sub_department');

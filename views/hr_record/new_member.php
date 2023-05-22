@@ -334,6 +334,35 @@
 											<?php } ?>
 										</div>
 									</div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <hr class="hr-10" />
+                                            <?php if (is_admin()){ ?>
+                                                <div class="checkbox checkbox-primary">
+                                                    <?php
+                                                    $isadmin = '';
+                                                    if(isset($member) && ($member->staffid == get_staff_user_id() || is_admin($member->staffid))) {
+                                                        $isadmin = ' checked';
+                                                    }
+                                                    ?>
+                                                    <input type="checkbox" name="administrator" id="administrator" <?php echo $isadmin; ?>>
+                                                    <label for="administrator"><?php echo _l('staff_add_edit_administrator'); ?></label>
+                                                </div>
+                                            <?php } ?>
+                                            <?php if(!isset($member) && total_rows(db_prefix().'emailtemplates',array('slug'=>'new-staff-created','active'=>0)) === 0){ ?>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input type="checkbox" name="send_welcome_email" id="send_welcome_email" checked>
+                                                    <label for="send_welcome_email"><?php echo _l('staff_send_welcome_email'); ?></label>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
 
 									<?php if(!isset($member) || is_admin() || !is_admin() && $member->admin == 0) { ?>
 										<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
@@ -391,11 +420,7 @@
 												$current_address = (isset($member) ? $member->current_address : '');
 												echo render_input('current_address','hr_current_address',$current_address,'text'); ?>
 											</div>
-											<div class="col-md-6">
-												<?php
-												$nation = (isset($member) ? $member->nation : '');
-												echo render_input('nation','hr_hr_nation',$nation,'text'); ?>
-											</div>
+
 										</div>
 
 										<div class="row">
@@ -456,11 +481,7 @@
 												$issue_bank = (isset($member) ? $member->issue_bank : '');
 												echo render_input('issue_bank','hr_bank_name',$issue_bank, 'text'); ?>
 											</div>
-											<div class="col-md-6">
-												<?php
-												$Personal_tax_code = (isset($member) ? $member->Personal_tax_code : '');
-												echo render_input('Personal_tax_code','hr_Personal_tax_code',$Personal_tax_code, 'text'); ?>
-											</div>
+
 										</div>
 
 										<div class="row">
@@ -481,8 +502,8 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="skype" class="control-label"><i class="fa fa-skype"></i> <?php echo _l('staff_add_edit_skype'); ?></label>
-													<input type="text" class="form-control" name="skype" value="<?php if(isset($member)){echo html_entity_decode($member->skype);} ?>">
+													<label for="twitter" class="control-label"><i class="fa fa-twitter"></i> <?php echo _l('staff_add_edit_twitter'); ?></label>
+													<input type="text" class="form-control" name="twitter" value="<?php if(isset($member)){echo html_entity_decode($member->twitter);} ?>">
 												</div>
 											</div>
 

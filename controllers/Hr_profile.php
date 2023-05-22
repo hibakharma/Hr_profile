@@ -296,7 +296,7 @@ class Hr_profile extends AdminController {
         $data['tab'][] = 'document';
         $data['tab'][] = 'education_level';
         $data['tab'][] = 'relation';
-        $data['tab'][] = 'deduction';
+        $data['tab'][] = 'deductions';
         //****OLD HR****//
         $data['tab'][] = 'insurance_type';
         $data['tab'][] = 'insurance_book_number';
@@ -305,16 +305,18 @@ class Hr_profile extends AdminController {
 
             if($group == 'deduction'){
                 $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('types/my_deduction_types_table');
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_deduction_types_table'));
+
             }
             if($data['group'] == 'document'){
                 $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('types/my_document_types_table');
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_document_types_table'));
+
             }
 
             if($data['group'] == 'education_level'){
                 $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('types/my_education_level_types_table');
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_education_level_types_table'));
 
             }
             if($data['group'] == 'education'){
@@ -328,7 +330,8 @@ class Hr_profile extends AdminController {
             }
             if($data['group'] == 'relation'){
                 $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('types/my_relation_types_table');
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_relation_types_table'));
+
             }
         }
 		if (is_admin()) {
@@ -2337,7 +2340,7 @@ class Hr_profile extends AdminController {
 							_l('hr_Personal_tax_code') => 'string',
 							_l('staff_add_edit_facebook') => 'string',
 							_l('staff_add_edit_linkedin') => 'string',
-							_l('staff_add_edit_skype') => 'string',
+							_l('staff_add_edit_twitter') => 'string',
 
 							_l('error') => 'string',
 						);
@@ -2401,7 +2404,7 @@ class Hr_profile extends AdminController {
 						$arr_header['Personal_tax_code'] = 30;
 						$arr_header['facebook'] = 31;
 						$arr_header['linkedin'] = 32;
-						$arr_header['skype'] = 33;
+						$arr_header['twitter'] = 33;
 
 						$pattern = '#^[a-z][a-z0-9\._]{2,31}@[a-z0-9\-]{3,}(\.[a-z]{2,4}){1,2}$#';
 						$reg_day = '#^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$#';
@@ -2503,7 +2506,7 @@ class Hr_profile extends AdminController {
 							$value_Personal_tax_code = isset($data[$row][$arr_header['Personal_tax_code']]) ? $data[$row][$arr_header['Personal_tax_code']] : '';
 							$value_facebook = isset($data[$row][$arr_header['facebook']]) ? $data[$row][$arr_header['facebook']] : '';
 							$value_linkedin = isset($data[$row][$arr_header['linkedin']]) ? $data[$row][$arr_header['linkedin']] : '';
-							$value_skype = isset($data[$row][$arr_header['skype']]) ? $data[$row][$arr_header['skype']] : '';
+							$value_twitter = isset($data[$row][$arr_header['skype']]) ? $data[$row][$arr_header['skype']] : '';
 
 							/*check null*/
 							if (is_null($value_firstname) == true || $value_firstname == '') {
@@ -2732,7 +2735,7 @@ class Hr_profile extends AdminController {
 									$value_Personal_tax_code,
 									$value_facebook,
 									$value_linkedin,
-									$value_skype,
+									$value_twitter,
 									$string_error,
 								]);
 
@@ -2781,7 +2784,7 @@ class Hr_profile extends AdminController {
 								$rd['Personal_tax_code'] = $value_Personal_tax_code;
 								$rd['facebook'] = $value_facebook;
 								$rd['linkedin'] = $value_linkedin;
-								$rd['skype'] = $value_skype;
+								$rd['twitter'] = $value_twitter;
 
 								$rd['permissions'] = $permissions;
 
@@ -4600,6 +4603,8 @@ class Hr_profile extends AdminController {
 			}
 
 		}
+        $this->load->model('currencies_model');
+        $data['base_currency'] = $this->currencies_model->get_base_currency();
 
 		$data['positions'] = $this->hr_profile_model->get_job_position();
 		$data['workplace'] = $this->hr_profile_model->get_workplace();
@@ -7632,7 +7637,7 @@ class Hr_profile extends AdminController {
 			'Personal_tax_code',
 			'facebook',
 			'linkedin',
-			'skype',
+			'twitter',
 		];
 
 		$header_label = [
@@ -7669,7 +7674,7 @@ class Hr_profile extends AdminController {
 			'hr_Personal_tax_code',
 			'staff_add_edit_facebook',
 			'staff_add_edit_linkedin',
-			'staff_add_edit_skype',
+			'staff_add_edit_twitter',
 		];
 
 		//Writer file
@@ -8036,8 +8041,8 @@ class Hr_profile extends AdminController {
             }elseif($group == 'allowances'){
                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_allowances_table'),['staff_id' => $staff_id]);
 
-            }elseif($group == 'statutory_deductions'){
-                 $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_statutory_deductions_table'),['staff_id' => $staff_id]);
+            }elseif($group == 'deductions'){
+                  $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/my_statutory_deductions_table'),['staff_id' => $staff_id]);
 
             }
         }

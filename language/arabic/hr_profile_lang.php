@@ -1033,6 +1033,8 @@ $lang['hr_training_process'] = 'التدريب';
 $lang['HR_dashboard'] = 'لوحة تحكم الموارد البشرية';
 $lang['hr_training'] = 'التدريب';
 $lang['HR_q&a'] = 'قاعدة المعرفة';
+$lang['hr_job_position_detail']											= 'الوصف الوظيفي';
+
 
 
 
