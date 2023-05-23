@@ -587,6 +587,14 @@ if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')
     $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
     ADD COLUMN `hourly_or_month` LONGTEXT NULL ');
 }
+if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
+    ADD COLUMN `subject` varchar(191) NULL ');
+}
+if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
+    ADD COLUMN `contract_value` decimal(15,2)	 NULL ');
+}
 
 
 if (!$CI->db->table_exists(db_prefix() . 'hr_staff_contract_detail')) {
@@ -618,6 +626,10 @@ if (!$CI->db->field_exists('staff_identifi' ,db_prefix() . 'staff')) {
 if (!$CI->db->field_exists('sub_department' ,db_prefix() . 'staff')) {
     $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
     ADD COLUMN `sub_department` int(11) NULL ');
+}
+if (!$CI->db->field_exists('sub_department' ,db_prefix() . 'staff')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
+    ADD COLUMN `admin` int(11) NULL ');
 }
 
 
