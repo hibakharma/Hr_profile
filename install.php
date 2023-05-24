@@ -587,6 +587,14 @@ if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')
     $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
     ADD COLUMN `hourly_or_month` LONGTEXT NULL ');
 }
+if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
+    ADD COLUMN `subject` varchar(191) NULL ');
+}
+if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'hr_staff_contract`
+    ADD COLUMN `contract_value` decimal(15,2)	 NULL ');
+}
 
 
 
