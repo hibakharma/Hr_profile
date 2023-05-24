@@ -131,12 +131,17 @@ function hr_profile_module_init_menu_items()
             'position' => 5,
         ]);
     }
+
+
+
+
+
     if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')
     ) {
         $CI->app_menu->add_sidebar_menu_item('organizations', [
             'name' => _l('organizations'),
             'icon' => 'fa fa-users',
-            'position' => 210,
+            'position' => 5,
         ]);
     }
 
@@ -149,7 +154,7 @@ function hr_profile_module_init_menu_items()
             'icon'     => 'fa fa-file',
         ]);
     }
-    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
+  /* if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
         $CI->app_menu->add_sidebar_children_item('organizations', [
             'slug'     => 'indicators',
             'name'     => _l('indicators'),
@@ -158,7 +163,8 @@ function hr_profile_module_init_menu_items()
             'icon'     => 'fa fa-tachometer',
         ]);
     }
-    if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
+  */
+   /* if (has_permission('hr', '', 'view_own') || has_permission('hr', '', 'view')){
         $CI->app_menu->add_sidebar_children_item('organizations', [
             'slug'     => 'appraisals',
             'name'     => _l('appraisals'),
@@ -167,6 +173,7 @@ function hr_profile_module_init_menu_items()
             'icon'     => 'fa fa-tachometer',
         ]);
     }
+   */
     if (has_permission('expired_documents', '', 'view_own') || has_permission('expired_documents', '', 'view')){
         $CI->app_menu->add_sidebar_children_item('organizations', [
             'slug'     => 'expired_documents',
@@ -176,10 +183,21 @@ function hr_profile_module_init_menu_items()
             'icon'     => 'fa fa-users',
         ]);
     }
+    $CI->app_menu->add_sidebar_children_item('organizations', [
+        'slug'     => 'sub_department',
+        'name'     => _l('sub_department'),
+        'href'     => admin_url('hr_profile/organization/sub_department'),
+        'position' => 65,
+        'icon'     => 'fa fa-building-o',
+    ]);
+
+
+
+
     $CI->app_menu->add_sidebar_menu_item('hr', [
         'name'     => _l('hr'),
         'icon'     => 'fa fa-users',
-        'position' => 200,
+        'position' => 5,
     ]);
     $CI->app_menu->add_sidebar_children_item('hr', [
         'slug'     => 'awards',
@@ -230,6 +248,9 @@ function hr_profile_module_init_menu_items()
         'position' => 110,
         'icon'     => 'fa fa-file',
     ]);
+
+
+
 
 
 
@@ -356,13 +377,7 @@ function hr_profile_module_init_menu_items()
     }
 
 
-    $CI->app_menu->add_sidebar_children_item('organizations', [
-        'slug'     => 'sub_department',
-        'name'     => _l('sub_department'),
-        'href'     => admin_url('hr_profile/organization/sub_department'),
-        'position' => 65,
-        'icon'     => 'fa fa-building-o',
-    ]);
+
 }
 
 /**

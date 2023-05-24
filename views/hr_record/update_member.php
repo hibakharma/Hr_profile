@@ -47,13 +47,6 @@ if (isset($manage_staff)) {
                   </div>
                   <div role="tabpanel" class="tab-pane active" id="tab_staff_profile">
 
-                    <?php if (total_rows(db_prefix() . 'emailtemplates', array('slug' => 'two-factor-authentication', 'active' => 0)) == 0) {?>
-                     <div class="checkbox checkbox-primary">
-                        <input type="checkbox" value="1" name="two_factor_auth_enabled" id="two_factor_auth_enabled"<?php if (isset($member) && $member->two_factor_auth_enabled == 1) {echo ' checked';}?>>
-                        <label for="two_factor_auth_enabled"><i class="fa fa-question-circle" data-toggle="tooltip" data-title="<?php echo _l('two_factor_authentication_info'); ?>"></i>
-                        <?php echo _l('enable_two_factor_authentication'); ?></label>
-                     </div>
-                     <?php }?>
 
                         <div class="col-md-12">
                            <div class="picture-container pull-left">
@@ -347,6 +340,44 @@ $orther_infor = (isset($member) ? $member->orther_infor : '');
                               <?php }?>
                            </div>
                         </div>
+
+                      <?php if(total_rows(db_prefix().'emailtemplates',array('slug'=>'two-factor-authentication','active'=>0)) == 0){ ?>
+
+
+                          <div class="panel_s mtop10  ">
+                              <div class="panel-body">
+                                  <h4 class="no-margin">
+                                      <?php echo _l('staff_two_factor_authentication'); ?>
+                                  </h4>
+                                  <hr class="hr-panel-heading" />
+                                  <?php echo form_open('admin/staff/update_two_factor',array('id'=>'two_factor_auth_form')); ?>
+                                  <div class="radio radio-primary">
+                                      <input type="radio" id="two_factor_auth_disabled" name="two_factor_auth" value="off" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 0) ? 'checked' : '' ?>>
+                                      <label class="custom-control-label" for="two_factor_auth_disabled"><?php echo _l('two_factor_authentication_disabed'); ?></label>
+                                  </div>
+                                  <?php if(is_email_template_active('two-factor-authentication')){ ?>
+                                      <div class="radio radio-primary">
+                                          <input type="radio" id="two_factor_auth_enabled" name="two_factor_auth" value="email" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 1) ? 'checked' : '' ?>>
+                                          <label for="two_factor_auth_enabled">
+                                              <i class="fa fa-question-circle" data-placement="right" data-toggle="tooltip" data-title="<?php echo _l('two_factor_authentication_info'); ?>"></i>
+                                              <?php echo _l('enable_two_factor_authentication'); ?>
+                                          </label>
+                                      </div>
+                                  <?php } ?>
+                                  <div class="radio radio-primary">
+                                      <input type="radio" id="google_two_factor_auth_enabled" name="two_factor_auth" value="google" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 2) ? 'checked' : '' ?>>
+                                      <label class="custom-control-label" for="google_two_factor_auth_enabled"><?php echo _l('enable_google_two_factor_authentication'); ?></label>
+                                  </div>
+                              </div>
+                          </div>
+
+
+                      <?php } ?>
+
+
+
+
+
 
                         <?php if (!isset($member) || is_admin() || !is_admin() && $member->admin == 0) {?>
                          <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->

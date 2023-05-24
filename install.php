@@ -589,6 +589,7 @@ if (!$CI->db->field_exists('hourly_or_month' ,db_prefix() . 'hr_staff_contract')
 }
 
 
+
 if (!$CI->db->table_exists(db_prefix() . 'hr_staff_contract_detail')) {
     $CI->db->query('CREATE TABLE `' . db_prefix() . "hr_staff_contract_detail` (
       `contract_detail_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -618,6 +619,10 @@ if (!$CI->db->field_exists('staff_identifi' ,db_prefix() . 'staff')) {
 if (!$CI->db->field_exists('sub_department' ,db_prefix() . 'staff')) {
     $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
     ADD COLUMN `sub_department` int(11) NULL ');
+}
+if (!$CI->db->field_exists('sub_department' ,db_prefix() . 'staff')) {
+    $CI->db->query('ALTER TABLE `' . db_prefix() . 'staff`
+    ADD COLUMN `admin` int(11) NULL ');
 }
 
 

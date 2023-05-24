@@ -55,33 +55,6 @@
 								</select>
 							</div>
 						</div>
-
-
-                        <?php $value = (isset($contract) ? $contract->subject : ''); ?>
-                        <?php echo render_input('subject','contract_subject',$value); ?>
-                        <i class="fa fa-question-circle pull-left" data-toggle="tooltip" title="<?php echo _l('add_only_main_salary'); ?>"></i>
-
-                        <div class="form-group">
-                            <label for="contract_value"><?php echo _l('salary'); ?></label>
-                            <div class="input-group" data-toggle="tooltip" title="<?php echo _l('contract_value_tooltip'); ?>">
-                                <input type="number" class="form-control" name="contract_value" value="<?php if(isset($contract)){echo $contract->contract_value; }?>">
-                                <div class="input-group-addon">
-                                    <?php echo $base_currency->symbol; ?>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-
-
-
-
-
-
-
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
