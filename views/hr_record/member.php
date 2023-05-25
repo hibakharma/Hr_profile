@@ -134,6 +134,7 @@ if($group == 'notification'){
 ?>
 <?php
 require('modules/hr_profile/assets/js/hr_record/add_update_staff_js.php');
+require('modules/hr_profile/assets/js/dependent_person/manage_js.php');
 
 ?>
 <script type="text/javascript">

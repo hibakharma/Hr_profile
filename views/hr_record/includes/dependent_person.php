@@ -72,7 +72,20 @@
 												<?php 
 												echo render_input('reason','hr_reason_label'); ?>
 											</div>
-										</div>
+                                        </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <?php
+                                                    echo render_date_input('start_month','hr_start_month', ''); ?>
+                                                </div>
+                                            
+                                                <div class="col-md-6">
+                                                    <?php
+                                                    echo render_date_input('end_month','hr_end_month', ''); ?>
+                                                </div>
+                                            </div>
+
 									</div>
 								</div>
 							</div>

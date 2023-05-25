@@ -291,6 +291,8 @@ $lang['hr_old_value'] 													= 'الراتب السابق';
 $lang['hr_new_value'] 													= 'الراتب الجديد';
 $lang['hr_unfinished_staff_received'] 									= 'لم يكمل الموظفون قائمة تحقق إستقبال الموظفين';
 $lang['hr_hr_birthday']                                                = 'تاريخ الميلاد';
+$lang['hr_hr_datecreated']                                                = 'تاريخ الإضافة';
+
 $lang['hr_hr_percentage']                                              = 'النسبة المئوية';
 $lang['hr_hr_finish']                                              	= 'منتهية';
 $lang['hr_hr_description']                                             = 'الوصف';
@@ -318,7 +320,7 @@ $lang['hr_contract_is_about_to_expire'] 								= 'عقود عمل على وشك
 $lang['hr_HR_Profile'] 												= 'سجلات الموارد البشرية';
 $lang['hr_preview_file'] 												= 'معاينة الملف';
 $lang['hr_working'] 													= 'يعمل';
-$lang['hr_maternity_leave'] 											= 'إجازة امومة';
+$lang['hr_maternity_leave'] 											= 'إجازة ';
 $lang['hr_inactivity'] 												= 'غير نشط';
 $lang['hr_staff_chart'] 												= 'مخطط الموظفين';
 $lang['hr_hr_id'] 														= 'ID';

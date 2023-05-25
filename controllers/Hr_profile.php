@@ -3345,7 +3345,7 @@ class Hr_profile extends AdminController {
 			}
 			$data['member'] = $member;
 			$title = $member->firstname . ' ' . $member->lastname;
-
+            $data['datecreated']=$member->datecreated;
 			if ($data['group'] == 'profile') {
 				$data['staff_departments'] = $this->departments_model->get_staff_departments($id);
 				$data['list_staff'] = $this->staff_model->get();
@@ -4841,8 +4841,8 @@ class Hr_profile extends AdminController {
 				$manage = $this->input->post('manage');
 				unset($data['manage']);
 
-				$id = $this->hr_profile_model->add_dependent_person($data);
-				if ($id) {
+				$idd = $this->hr_profile_model->add_dependent_person($data);
+				if ($idd) {
 					$success = true;
 					$message = _l('added_successfully', _l('hr_dependent_persons'));
 					set_alert('success', $message);
@@ -4854,7 +4854,7 @@ class Hr_profile extends AdminController {
 				if ($manage) {
 					redirect(admin_url('hr_profile/dependent_persons'));
 				} else {
-					redirect(admin_url('hr_profile/member/' . get_staff_user_id() . '/dependent_person'));
+					redirect(admin_url('hr_profile/member/' . get_staff_user_id() .'/dependent_person'));
 				}
 			} else {
 				$manage = $this->input->post('manage');

@@ -133,6 +133,14 @@ foreach ($staff_departments as $staff_department) {
 							<td class="bold" ><?php echo _l('hr_hr_birthday'); ?></td>
 							<td><?php echo _d($member->birthday); ?></td>
 						</tr>
+
+                        <tr class="project-overview">
+                            <td class="bold" ><?php echo _l('hr_hr_datecreated'); ?></td>
+                            <td><?php echo _d($datecreated); ?></td>
+                        </tr>
+
+
+
 						<tr class="project-overview">
 							<td class="bold"><?php echo _l('staff_add_edit_phonenumber'); ?></td>
 							<td><?php echo html_entity_decode($member->phonenumber); ?></td>
