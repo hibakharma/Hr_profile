@@ -185,28 +185,35 @@
 									<?php } ?>
 
 									<div class="row">
-										<div class="col-md-6">
-											<?php $literacy = (isset($member) ? $member->literacy : ''); ?> 
-											<div class="form-group">
-												<label for="literacy" class="control-label"><?php echo _l('hr_hr_literacy'); ?></label>
-												<select name="literacy" id="literacy" class="selectpicker" data-width="100%" data-none-selected-text="<?php echo _l('hr_not_required'); ?>">
-													<option value=""></option>
-													<option value="primary_level" <?php if($literacy == 'primary_level'){ echo 'selected'; } ?> ><?php echo _l('hr_primary_level'); ?></option>
-													<option value="intermediate_level" <?php if($literacy == 'intermediate_level'){ echo 'selected'; } ?> ><?php echo _l('hr_intermediate_level'); ?></option>
-													<option value="college_level" <?php if($literacy == 'college_level'){ echo 'selected'; } ?> ><?php echo _l('hr_college_level'); ?></option>
-													<option value="masters" <?php if($literacy == 'masters'){ echo 'selected'; } ?> ><?php echo _l('hr_masters'); ?></option>
-													<option value="doctor" <?php if($literacy == 'doctor'){ echo 'selected'; } ?> ><?php echo _l('hr_Doctor'); ?></option>
-													<option value="bachelor" <?php if($literacy == 'bachelor'){ echo 'selected'; } ?> ><?php echo _l('hr_bachelor'); ?></option>
-													<option value="engineer" <?php if($literacy == 'engineer'){ echo 'selected'; } ?> ><?php echo _l('hr_Engineer'); ?></option>
-													<option value="university" <?php if($literacy == 'university'){ echo 'selected'; } ?> ><?php echo _l('hr_university'); ?></option>
-													<option value="intermediate_vocational" <?php if($literacy == 'intermediate_vocational'){ echo 'selected'; } ?> ><?php echo _l('hr_intermediate_vocational'); ?></option>
-													<option value="college_vocational" <?php if($literacy == 'college_vocational'){ echo 'selected'; } ?> ><?php echo _l('hr_college_vocational'); ?></option>
-													<option value="in-service" <?php if($literacy == 'in-service'){ echo 'selected'; } ?> ><?php echo _l('hr_in-service'); ?></option>
-													<option value="high_school" <?php if($literacy == 'high_school'){ echo 'selected'; } ?> ><?php echo _l('hr_high_school'); ?></option>
-													<option value="intermediate_level_pro" <?php if($literacy == 'intermediate_level_pro'){ echo 'selected'; } ?> ><?php echo _l('hr_intermediate_level_pro'); ?></option>
-												</select>
-											</div>
-										</div>
+                                        <div class="col-md-12">
+                                            <?php
+
+                                            if(option_exists('education_level_type')){
+                                                $data =array();
+                                                $ad_opts = json_decode(get_option('education_level_type')) ;
+
+                                                foreach ($ad_opts as $option){
+                                                    $sids = json_decode(json_encode($option),true);
+                                                    array_push($data,$sids);
+                                                }
+                                            }else{
+                                                $data =array();
+                                            }
+                                            ?>
+
+                                            <div class="form-group">
+                                                <label for="cat_id" class="control-label"><?php echo _l('education_level') ?></label>
+                                                <select class="form-control" id="education_level" name="education_level" placeholder="<?php echo _l('education_level') ?>" aria-invalid="false">
+                                                    <?php foreach ($data as $value) { ?>
+                                                        <option value="<?php echo $value['value'] ?>"><?php echo $value['value'] ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="hourly_rate"><?php echo _l('staff_hourly_rate'); ?></label>
@@ -314,19 +321,7 @@
 									<?php $rel_id = (isset($member) ? $member->staffid : false); ?>
 									<?php echo render_custom_fields('staff',$rel_id); ?>
 
-									<div class="row">
-										<div class="col-md-12">
-											<hr class="hr-10" />
-											
 
-											<?php if(!isset($member) && total_rows(db_prefix().'emailtemplates',array('slug'=>'new-staff-created','active'=>0)) === 0){ ?>
-												<div class="checkbox checkbox-primary">
-													<input type="checkbox" name="send_welcome_email" id="send_welcome_email" checked>
-													<label for="send_welcome_email"><?php echo _l('staff_send_welcome_email'); ?></label>
-												</div>
-											<?php } ?>
-										</div>
-									</div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <hr class="hr-10" />
@@ -352,44 +347,7 @@
                                     </div>
 
 
-                                    <?php if(total_rows(db_prefix().'emailtemplates',array('slug'=>'two-factor-authentication','active'=>0)) == 0){ ?>
-
-
-                                        <div class="panel_s mtop10  ">
-                                            <div class="panel-body">
-                                                <h4 class="no-margin">
-                                                    <?php echo _l('staff_two_factor_authentication'); ?>
-                                                </h4>
-                                                <hr class="hr-panel-heading" />
-                                                <?php echo form_open('admin/staff/update_two_factor',array('id'=>'two_factor_auth_form')); ?>
-                                                <div class="radio radio-primary">
-                                                    <input type="radio" id="two_factor_auth_disabled" name="two_factor_auth" value="off" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 0) ? 'checked' : '' ?>>
-                                                    <label class="custom-control-label" for="two_factor_auth_disabled"><?php echo _l('two_factor_authentication_disabed'); ?></label>
-                                                </div>
-                                                <?php if(is_email_template_active('two-factor-authentication')){ ?>
-                                                    <div class="radio radio-primary">
-                                                        <input type="radio" id="two_factor_auth_enabled" name="two_factor_auth" value="email" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 1) ? 'checked' : '' ?>>
-                                                        <label for="two_factor_auth_enabled">
-                                                            <i class="fa fa-question-circle" data-placement="right" data-toggle="tooltip" data-title="<?php echo _l('two_factor_authentication_info'); ?>"></i>
-                                                            <?php echo _l('enable_two_factor_authentication'); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php } ?>
-                                                <div class="radio radio-primary">
-                                                    <input type="radio" id="google_two_factor_auth_enabled" name="two_factor_auth" value="google" class="custom-control-input"<?php echo ($current_user->two_factor_auth_enabled == 2) ? 'checked' : '' ?>>
-                                                    <label class="custom-control-label" for="google_two_factor_auth_enabled"><?php echo _l('enable_google_two_factor_authentication'); ?></label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-                                    <?php } ?>
-
-
-
-
-
-									<?php if(!isset($member) || is_admin() || !is_admin() && $member->admin == 0) { ?>
+                                    <?php if(!isset($member) || is_admin() || !is_admin() && $member->admin == 0) { ?>
 										<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
 										<input  type="text" class="fake-autofill-field" name="fakeusernameremembered" value='' tabindex="-1"/>
 										<input  type="password" class="fake-autofill-field" name="fakepasswordremembered" value='' tabindex="-1"/>
@@ -440,7 +398,7 @@
 										</div>
 
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-12">
 												<?php 
 												$current_address = (isset($member) ? $member->current_address : '');
 												echo render_input('current_address','hr_current_address',$current_address,'text'); ?>
@@ -501,7 +459,7 @@
 										</div>
 
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-12">
 												<?php
 												$issue_bank = (isset($member) ? $member->issue_bank : '');
 												echo render_input('issue_bank','hr_bank_name',$issue_bank, 'text'); ?>
@@ -532,7 +490,15 @@
 												</div>
 											</div>
 
-										</div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="skype" class="control-label"><i class="fa fa-skype"></i> <?php echo _l('staff_add_edit_skype'); ?></label>
+                                                    <input type="text" class="form-control" name="skype" value="<?php if (isset($member)) {echo html_entity_decode($member->skype);}?>">
+                                                </div>
+                                            </div>
+
+                                        </div>
 
 									</div>
 

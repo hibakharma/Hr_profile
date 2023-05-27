@@ -44,6 +44,9 @@ if ($member->active == 0) {?>
 										<a href="twitter: <?php echo html_escape($member->twitter); ?>" class="btn btn-circle">
 											<i class="fa fa-twitter"></i>
 										</a>
+                                        <a href="skype: <?php echo html_escape($member->skype); ?>" class="btn btn-circle">
+                                            <i class="fa fa-skype"></i>
+                                        </a>
 										<a href="mailto: <?php echo html_escape($member->email); ?>" class="btn btn-circle">
 											<i class="fa fa-envelope"></i>
 										</a>

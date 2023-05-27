@@ -79,7 +79,7 @@
                                                     <?php
                                                     echo render_date_input('start_month','hr_start_month', ''); ?>
                                                 </div>
-                                            
+
                                                 <div class="col-md-6">
                                                     <?php
                                                     echo render_date_input('end_month','hr_end_month', ''); ?>

@@ -301,21 +301,23 @@ class Hr_profile extends AdminController {
         $data['tab'][] = 'insurance_type';
         $data['tab'][] = 'insurance_book_number';
         //**************
+
         if ($this->input->is_ajax_request()) {
 
-            if($group == 'deduction'){
-                $this->load->library("hr_profile/HrmApp");
+            if($group == 'deductions'){
+               // $this->load->library("hr_profile/HrmApp");
+
                 $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_deduction_types_table'));
 
             }
             if($data['group'] == 'document'){
-                $this->load->library("hr_profile/HrmApp");
+                //$this->load->library("hr_profile/HrmApp");
                 $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_document_types_table'));
 
             }
 
             if($data['group'] == 'education_level'){
-                $this->load->library("hr_profile/HrmApp");
+               // $this->load->library("hr_profile/HrmApp");
                 $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_education_level_types_table'));
 
             }
@@ -325,8 +327,8 @@ class Hr_profile extends AdminController {
 
             }
             if($data['group'] == 'skill'){
-                $this->load->library("hr_profile/HrmApp");
-                $this->hrmapp->get_table_data('types/my_skill_types_table');
+                $this->app->get_table_data(module_views_path('hr_profile', 'admin/tables/types/my_skill_types_table'));
+
             }
             if($data['group'] == 'relation'){
                 $this->load->library("hr_profile/HrmApp");
@@ -7624,8 +7626,7 @@ class Hr_profile extends AdminController {
 			'home_town', //text
 			'marital_status',
 			'current_address',
-			'nation',
-			'birthplace',
+            'birthplace',
 			'religion',
 			'identification',
 			'days_for_identity',
@@ -7634,10 +7635,10 @@ class Hr_profile extends AdminController {
 			'account_number',
 			'name_account',
 			'issue_bank',
-			'Personal_tax_code',
-			'facebook',
+            'facebook',
 			'linkedin',
 			'twitter',
+            'skype',
 		];
 
 		$header_label = [
@@ -7661,8 +7662,7 @@ class Hr_profile extends AdminController {
 			'hr_hr_home_town', //text
 			'hr_hr_marital_status',
 			'hr_current_address',
-			'hr_hr_nation',
-			'hr_hr_birthplace',
+            'hr_hr_birthplace',
 			'hr_hr_religion',
 			'hr_citizen_identification',
 			'hr_license_date',
@@ -7671,10 +7671,10 @@ class Hr_profile extends AdminController {
 			'hr_bank_account_number',
 			'hr_bank_account_name',
 			'hr_bank_name',
-			'hr_Personal_tax_code',
-			'staff_add_edit_facebook',
+            'staff_add_edit_facebook',
 			'staff_add_edit_linkedin',
 			'staff_add_edit_twitter',
+            'staff_add_edit_skype',
 		];
 
 		//Writer file
